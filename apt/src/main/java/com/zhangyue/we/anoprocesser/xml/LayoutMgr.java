@@ -135,7 +135,7 @@ public class LayoutMgr {
             String path = fileObject.toUri().toString();
             String preFix = "file:/";
             if (path.startsWith(preFix)) {
-                path = path.substring(preFix.length());
+                path = path.substring(preFix.length()-1);
             }
             File file = new File(path);
             while (!file.getName().equals("build")) {
