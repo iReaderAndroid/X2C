@@ -1,9 +1,8 @@
 package com.zhangyue.we.anoprocesser;
 
-import com.zhangyue.we.anoprocesser.xml.LayoutMgr;
+import com.zhangyue.we.anoprocesser.xml.LayoutManager;
 import com.zhangyue.we.x2c.ano.Xml;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,16 +21,16 @@ import javax.lang.model.element.TypeElement;
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 @SupportedAnnotationTypes("com.zhangyue.we.x2c.ano.Xml")
-public class XmlProcesser extends AbstractProcessor {
+public class XmlProcessor extends AbstractProcessor {
 
-    private String mGroupName;
-    private LayoutMgr mLayoutMgr;
+    private int mGroupId = -1;
+    private LayoutManager mLayoutMgr;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
         Log.init(processingEnvironment.getMessager());
-        mLayoutMgr = LayoutMgr.instance();
+        mLayoutMgr = LayoutManager.instance();
         mLayoutMgr.setFiler(processingEnvironment.getFiler());
     }
 
@@ -48,10 +47,8 @@ public class XmlProcesser extends AbstractProcessor {
         }
 
         for (Integer id : layouts) {
-            if (mGroupName == null) {
-                mGroupName = "A" + Integer.toHexString(id >> 24);
-            }
-            mLayoutMgr.setGroupName(mGroupName);
+            if (mGroupId == -1) mGroupId = id;
+            mLayoutMgr.setGroupId(mGroupId);
             mLayoutMgr.translate(mLayoutMgr.getLayoutName(id));
         }
 

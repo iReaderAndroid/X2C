@@ -1,13 +1,10 @@
 package com.zhangyue.we.anoprocesser.xml;
 
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
 import com.zhangyue.we.anoprocesser.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 
 import javax.annotation.processing.Filer;
@@ -17,31 +14,31 @@ import javax.tools.JavaFileObject;
  * @author：chengwei 2018/8/10
  * @description
  */
-public class LayoutMgr {
+public class LayoutManager {
 
-    private static LayoutMgr sInstance;
+    private static LayoutManager sInstance;
     private File mRootFile;
     private File mLayoutFile;
     private String mPackageName;
-    private String mGroupName;
+    private int mGroupId;
     private Filer mFiler;
     private HashMap<Integer, String> mMap;
-    private HashMap<String, Integer> mRjava;
-    private HashMap<Integer, String> mRjavaId;
+    private HashMap<String, Integer> mRJava;
+    private HashMap<Integer, String> mRJavaId;
     private HashMap<String, Style> mStyles;
     private HashMap<String, String> mTranslateMap;
 
-    private LayoutMgr() {
+    private LayoutManager() {
         mMap = new HashMap<>();
-        mRjavaId = new HashMap<>();
+        mRJavaId = new HashMap<>();
         mTranslateMap = new HashMap<>();
     }
 
-    public static LayoutMgr instance() {
+    public static LayoutManager instance() {
         if (sInstance == null) {
-            synchronized (LayoutMgr.class) {
+            synchronized (LayoutManager.class) {
                 if (sInstance == null) {
-                    sInstance = new LayoutMgr();
+                    sInstance = new LayoutManager();
                 }
             }
         }
@@ -52,19 +49,19 @@ public class LayoutMgr {
         this.mFiler = filer;
         getLayoutPath();
         mPackageName = getPackageName();
-        mRjava = getR();
+        mRJava = getR();
     }
 
-    public void setGroupName(String groupName) {
-        this.mGroupName = groupName;
+    public void setGroupId(int groupName) {
+        this.mGroupId = groupName;
     }
 
     public String getLayoutName(int id) {
-        return mRjavaId.get(id);
+        return mRJavaId.get(id);
     }
 
     public Integer getLayoutId(String layoutName) {
-        return mRjava.get(layoutName);
+        return mRJava.get(layoutName);
     }
 
     public String translate(String layoutName) {
@@ -73,7 +70,7 @@ public class LayoutMgr {
         if (mMap.containsKey(layoutId)) {
             fileName = mMap.get(layoutId);
         } else {
-            LayoutReader reader = new LayoutReader(mLayoutFile, layoutName, mFiler, mPackageName, mGroupName);
+            LayoutReader reader = new LayoutReader(mLayoutFile, layoutName, mFiler, mPackageName, mGroupId);
             fileName = reader.parse();
             mMap.put(layoutId, fileName);
         }
@@ -94,18 +91,18 @@ public class LayoutMgr {
     public void generateMap() {
         printTranslate();
 
-        MapWriter mapWriter = new MapWriter(mGroupName, mMap, mFiler);
+        MapWriter mapWriter = new MapWriter(mGroupId, mMap, mFiler);
         mapWriter.write();
         mMap.clear();
         mTranslateMap.clear();
     }
 
     private void printTranslate() {
-        if(mTranslateMap.size()==0){
+        if (mTranslateMap.size() == 0) {
             return;
         }
         int maxTab = 0;
-        int tabCount = 0;
+        int tabCount;
         for (String layoutName : mTranslateMap.values()) {
             tabCount = layoutName.length() / 4 + 1;
             if (tabCount > maxTab) {
@@ -135,7 +132,7 @@ public class LayoutMgr {
             String path = fileObject.toUri().toString();
             String preFix = "file:/";
             if (path.startsWith(preFix)) {
-                path = path.substring(preFix.length()-1);
+                path = path.substring(preFix.length() - 1);
             }
             File file = new File(path);
             while (!file.getName().equals("build")) {
@@ -183,7 +180,7 @@ public class LayoutMgr {
                         String ss[] = line.split("=");
                         int id = Integer.decode(ss[1]);
                         map.put(ss[0], id);
-                        mRjavaId.put(id, ss[0]);
+                        mRJavaId.put(id, ss[0]);
                     }
                 }
             }
@@ -195,12 +192,13 @@ public class LayoutMgr {
 
     private File getRFile() {
         String sep = File.separator;
-        StringBuilder stringBuilder = new StringBuilder(mRootFile.getAbsolutePath());
-        File rDir = new File(stringBuilder.append(sep).append("build").append(sep)
-                .append("generated").append(sep)
-                .append("source").append(sep).append("r").toString());
+        String stringBuilder = mRootFile.getAbsolutePath() + sep + "build" + sep +
+                "generated" + sep + "source" + sep + "r";
+        File rDir = new File(stringBuilder);
 
         File files[] = rDir.listFiles();
+        if (files == null)
+            return null;
         File rFile = null;
         long time = 0;
         for (File file : files) {

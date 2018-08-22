@@ -25,12 +25,12 @@ public class LayoutReader {
     private String mPackageName;
     private File mFile;
 
-    public LayoutReader(File file, String name, Filer filer, String packageName, String groupName) {
+    public LayoutReader(File file, String name, Filer filer, String packageName, int groupId) {
         mFile = file;
         mFiler = filer;
         mPackageName = packageName;
         mLayoutName = name;
-        mName = getJavaName(groupName, name);
+        mName = getJavaName(groupId, name);
     }
 
     public String parse() {
@@ -92,8 +92,8 @@ public class LayoutReader {
         return new View(mPackageName, name, attributes);
     }
 
-    private String getJavaName(String groupName, String name) {
-        String retName = groupName + "_" + name;
+    private String getJavaName(int groupId, String name) {
+        String retName = groupId + "_" + name;
         String[] ss = retName.split("_");
         StringBuilder stringBuilder = new StringBuilder("X2C_");
         for (int i = 0; i < ss.length; i++) {

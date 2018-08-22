@@ -1,6 +1,6 @@
 package com.zhangyue.we.anoprocesser;
 
-import com.zhangyue.we.anoprocesser.xml.LayoutMgr;
+import com.zhangyue.we.anoprocesser.xml.LayoutManager;
 import com.zhangyue.we.anoprocesser.xml.Style;
 
 import org.xml.sax.Attributes;
@@ -119,7 +119,7 @@ public class View {
         }
         String obj = getObjName();
         if (mTagName.equals("include")) {
-            String javaName = LayoutMgr.instance().translate(getIncludeLayout());
+            String javaName = LayoutManager.instance().translate(getIncludeLayout());
             stringBuffer.append(String.format("%s %s =(View) new %s().createView(ctx,0);\n"
                     , mName, obj, javaName));
         } else {
@@ -701,7 +701,7 @@ public class View {
         String styleName = mAttributes.getValue("style");
 
         if (styleName != null && styleName.startsWith("@")) {
-            LayoutMgr layoutMgr = LayoutMgr.instance();
+            LayoutManager layoutMgr = LayoutManager.instance();
             Style style = layoutMgr.getStyle(styleName.substring(styleName.lastIndexOf("/") + 1));
             if (style != null) {
                 mStyleAttributes = style.attribute;

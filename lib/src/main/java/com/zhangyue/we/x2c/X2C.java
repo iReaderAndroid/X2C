@@ -2,11 +2,10 @@ package com.zhangyue.we.x2c;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.HashMap;
 
 /**
  * @author：chengwei 2018/8/9
@@ -15,7 +14,7 @@ import java.util.HashMap;
 public class X2C {
 
     private static X2C sInstance;
-    private HashMap<String, IViewCreator> mMap = new HashMap<>();
+    private SparseArray<IViewCreator> mSparseArray = new SparseArray<>();
 
     private X2C() {
 
@@ -72,33 +71,17 @@ public class X2C {
     }
 
     private View getView(Context context, int layoutId) {
-        String group = generateGroupId(layoutId);
-        IViewCreator creator = mMap.get(group);
-        if (creator == null) {
+        IViewCreator creator = null;
+        if (mSparseArray.indexOfKey(layoutId) >= 0) {
+            creator = mSparseArray.get(layoutId);
+        } else {
             try {
-                creator = (IViewCreator) context.getClassLoader().loadClass("com.zhangyue.we.x2c.X2C_" + group).newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
+                creator = (IViewCreator) context.getClassLoader()
+                        .loadClass("com.zhangyue.we.x2c.X2C_" + layoutId).newInstance();
+            } catch (Exception ignored) {//
             }
-            if (creator == null) {
-                creator = new DefaultCreator();
-            }
-            mMap.put(group, creator);
+            mSparseArray.put(layoutId, creator);
         }
-        return creator.createView(context, layoutId);
+        return creator == null ? null : creator.createView(context, layoutId);
     }
-
-    private String generateGroupId(int layoutId) {
-        return "A" + Integer.toHexString(layoutId >> 24);
-    }
-
-    private static class DefaultCreator implements IViewCreator {
-
-        @Override
-        public View createView(Context context, int layoutId) {
-            return null;
-        }
-    }
-
-
 }
