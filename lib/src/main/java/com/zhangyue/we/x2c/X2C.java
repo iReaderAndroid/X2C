@@ -12,24 +12,7 @@ import android.view.ViewGroup;
  * @description
  */
 public class X2C {
-
-    private static X2C sInstance;
-    private SparseArray<IViewCreator> mSparseArray = new SparseArray<>();
-
-    private X2C() {
-
-    }
-
-    public static X2C instance() {
-        if (sInstance == null) {
-            synchronized (X2C.class) {
-                if (sInstance == null) {
-                    sInstance = new X2C();
-                }
-            }
-        }
-        return sInstance;
-    }
+    private static final SparseArray<IViewCreator> sSparseArray = new SparseArray<>();
 
     /**
      * 设置contentview，检测如果有对应的java文件，使用java文件，否则使用xml
@@ -37,9 +20,9 @@ public class X2C {
      * @param activity 上下文
      * @param layoutId layout的资源id
      */
-    public void setContentView(Activity activity, int layoutId) {
+    public static void setContentView(Activity activity, int layoutId) {
         if (activity == null) {
-            throw new IllegalArgumentException(" activity must not be null");
+            throw new IllegalArgumentException("Activity must not be null");
         }
         View view = getView(activity, layoutId);
         if (view != null) {
@@ -55,9 +38,9 @@ public class X2C {
      * @param context  上下文
      * @param layoutId layout的资源id
      */
-    public View inflate(Context context, int layoutId, ViewGroup parent) {
+    public static View inflate(Context context, int layoutId, ViewGroup parent) {
         if (context == null) {
-            throw new IllegalArgumentException(" context must not be null");
+            throw new IllegalArgumentException("Context must not be null");
         }
         View view = getView(context, layoutId);
         if (view != null) {
@@ -70,17 +53,17 @@ public class X2C {
         }
     }
 
-    private View getView(Context context, int layoutId) {
+    private static View getView(Context context, int layoutId) {
         IViewCreator creator = null;
-        if (mSparseArray.indexOfKey(layoutId) >= 0) {
-            creator = mSparseArray.get(layoutId);
+        if (sSparseArray.indexOfKey(layoutId) >= 0) {
+            creator = sSparseArray.get(layoutId);
         } else {
             try {
                 creator = (IViewCreator) context.getClassLoader()
                         .loadClass("com.zhangyue.we.x2c.X2C_" + layoutId).newInstance();
             } catch (Exception ignored) {//
             }
-            mSparseArray.put(layoutId, creator);
+            sSparseArray.put(layoutId, creator);
         }
         return creator == null ? null : creator.createView(context, layoutId);
     }
