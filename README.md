@@ -190,3 +190,40 @@ public class X2C_A7f implements IViewCreator {
 |android:lineSpacingExtra|
 |android:maxLines|
 |...|
+
+## 由使用问题和其他技术问题，欢迎加群交流讨论
+
+> QQ群：`558449447`，添加请注明来自`X2C`
+>
+> <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=4464e9ee4fc8b05ee3c4eeb4f4be97469c1cfe46cded6b00f4a887ebebb60916"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Android技术交流分享" title="Android技术交流分享"></a>
+>
+> 欢迎各位使用，该项目会持续维护。
+>
+>
+> 另：欢迎加入[掌阅](http://www.zhangyue.com/jobs)大家庭，一起研究Android新技术。简历请发送`huangjian@zhangyue.com`,注明应聘方向。
+>
+# LICENSE
+
+```
+MIT LICENSE 
+Copyright (c) 2018 zhangyue
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
