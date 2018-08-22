@@ -1,0 +1,29 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    repositories {
+        google()
+        jcenter()
+//        maven { url 'http://192.168.6.84:8081/artifactory/gradle-release-local' }
+//        maven { url 'http://192.168.6.84:8081/artifactory/libs-snapshot-local' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+//        maven { url 'http://192.168.6.84:8081/artifactory/gradle-release-local' }
+//        maven { url 'http://192.168.6.84:8081/artifactory/libs-snapshot-local' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

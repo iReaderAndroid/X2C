@@ -1,0 +1,98 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+//项目主页
+def siteUrl = 'https://github.com/chengweidev'    // project homepage
+//项目的版本控制地址
+def gitUrl = 'https://github.com/chengweidev' // project git
+
+//发布到组织名称名字，必须填写
+group = "com.zhangyue.we.x2c"
+//发布到JCenter上的项目名字，必须填写
+def libName = "apt"
+// 版本号，下次更新是只需要更改版本号即可
+version = "2.1.2"
+
+////生成源文件
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+////生成文档
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    options.encoding "UTF-8"
+//    options.charSet 'UTF-8'
+//    options.author true
+//    options.version true
+//    options.links "https://github.com/chengweidev"
+//    failOnError false
+//}
+//
+////文档打包成jar
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+////拷贝javadoc文件
+//task copyDoc(type: Copy) {
+//    from "${buildDir}/docs/"
+//    into "docs"
+//}
+//
+////上传到jcenter所需要的源码文件
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
+
+// 配置maven库，生成POM.xml文件
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                name 'xml 2 code annotation processor'
+                url siteUrl
+                licenses {
+                    license {
+                        name 'xml 2 code annotation processor'
+                        url 'https://github.com/chengweidev'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'chengweidev'
+                        name 'chengweidev'
+                        email 'chengweidev@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+//上传到jcenter
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")    //读取 local.properties 文件里面的 bintray.user
+    key = properties.getProperty("bintray.apikey")   //读取 local.properties 文件里面的 bintray.apikey
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = libName    //发布到JCenter上的项目名字，必须填写
+        desc = 'This is a lightweight SQLite database framework'    //项目描述
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}

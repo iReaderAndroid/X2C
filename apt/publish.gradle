@@ -1,0 +1,96 @@
+/*****************************************
+ *
+ *
+ *       插件发布相关配置
+ *
+ *
+ *****************************************/
+
+apply plugin: 'maven-publish'
+apply plugin: 'maven'
+
+def ARTIFACT_ID = "apt"
+def VERSION_NAME = '1.2.5'
+def GROUP_ID = 'com.zhangyue.we.x2c'
+
+def projectName = "timePlugin"
+def mavenDesc = 'your desc'
+
+def licenseNames = ['The Apache Software License, Version 2.0']
+def licenseUrls = ['http://www.apache.org/licenses/LICENSE-2.0.txt']
+
+def inception = '2017'
+def username = 'chengwei'
+
+/**
+ *  上传release版 到 远程maven
+ */
+task uploadMavenRelease(dependsOn: ['assemble']){
+    doLast{
+        uploadArchives.repositories.mavenDeployer.pom.version = "${VERSION_NAME}"
+        uploadArchives.execute()
+    }
+}
+
+/**
+ * 上传 snapshot版 到 远程maven
+ */
+task uploadMavenSnapshot{
+    doLast{
+        uploadArchives.repositories.mavenDeployer.pom.version = "${VERSION_NAME}-SNAPSHOT"
+        uploadArchives.execute()
+    }
+}
+
+/**
+ * 上传到远程maven
+ */
+uploadArchives {
+    repositories {
+        mavenDeployer {
+
+            def MAVEN_LOCAL_RELEASE = "${artifactory_contextUrl}/gradle-release-local"
+            def MAVEN_LOCAL_SNAPSHOT = "${artifactory_contextUrl}/libs-snapshot-local"
+            repository(url:"$MAVEN_LOCAL_RELEASE"){
+                authentication(userName: "${artifactory_user}", password:"${artifactory_password}")
+            }
+            snapshotRepository(url: "$MAVEN_LOCAL_SNAPSHOT") {
+                authentication(userName: "${artifactory_user}", password:"${artifactory_password}")
+            }
+
+            pom.project {
+                // Description
+                name projectName
+                description mavenDesc
+                url MAVEN_LOCAL_SNAPSHOT
+
+                // Archive
+                groupId GROUP_ID
+                artifactId ARTIFACT_ID
+                version VERSION_NAME
+
+                // License
+                inceptionYear inception
+                licenses {
+                    licenseNames.eachWithIndex { ln, li ->
+                        license {
+                            name ln
+                            url licenseUrls[li]
+                        }
+                    }
+                }
+                developers {
+                    developer {
+                        name username
+                    }
+                }
+                scm {
+                    connection MAVEN_LOCAL_SNAPSHOT
+                    developerConnection MAVEN_LOCAL_SNAPSHOT
+                    url MAVEN_LOCAL_SNAPSHOT
+                }
+            }
+        }
+    }
+}
+
