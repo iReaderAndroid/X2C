@@ -54,19 +54,30 @@ public class X2C {
     }
 
     private static View getView(Context context, int layoutId) {
-        IViewCreator creator = null;
-        int groupId = generateGroupId(layoutId);
-        if (sSparseArray.indexOfKey(groupId) >= 0) {
-            creator = sSparseArray.get(groupId);
-        } else {
+        int group = generateGroupId(layoutId);
+        IViewCreator creator = sSparseArray.get(group);
+        if (creator == null) {
             try {
-                creator = (IViewCreator) context.getClassLoader()
-                        .loadClass("com.zhangyue.we.x2c.X2C_" + groupId).newInstance();
-            } catch (Exception ignored) {//
+                creator = (IViewCreator) context.getClassLoader().loadClass("com.zhangyue.we.x2c.X2C_" + group).newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            sSparseArray.put(groupId, creator);
+
+            //如果creator为空，放一个默认进去，防止每次都调用反射方法耗时
+            if (creator == null) {
+                creator = new DefaultCreator();
+            }
+            sSparseArray.put(group, creator);
         }
-        return creator == null ? null : creator.createView(context, layoutId);
+        return creator.createView(context, layoutId);
+    }
+
+    private static class DefaultCreator implements IViewCreator {
+
+        @Override
+        public View createView(Context context, int layoutId) {
+            return null;
+        }
     }
 
     private static int generateGroupId(int layoutId) {
