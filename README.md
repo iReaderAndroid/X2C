@@ -1,6 +1,6 @@
 # 背景
 
-&ensp;一般大家在写页面时都是通过xml写布局，通过setContentView、或LayoutInflater.from(context).inflate方法将xml布局加载到内存中。
+&ensp;&ensp;&ensp;&ensp;一般大家在写页面时都是通过xml写布局，通过setContentView、或LayoutInflater.from(context).inflate方法将xml布局加载到内存中。
 
 #### 优点
    *  可维护性好
@@ -12,12 +12,12 @@
    *  递归解析xml较耗时
    *  反射生成对象的耗时是new的3倍以上
 
-&ensp;&ensp;&ensp;&ensp;我们团队在这个问题上也探索过很多解决方案，一度走到了另一个极端，完全废弃xml，所有控件通过java来new，甚至直接在canvas里绘制，这样虽然性能确实提升了，但是代码已经没有了一丁点可读性，可维护性。
+&ensp;&ensp;&ensp;&ensp;我们团队在这个问题上也探索过很多解决方案，一度走到了另一个极端，完全废弃xml，所有控件通过java来new，甚至直接在canvas里绘制，这样虽然性能确实提升了，但是代码已经没有了一丁点可读性，可维护性。    
 &ensp;&ensp;&ensp;&ensp;我们后来反思代码到底是给机器看的，还是给人看的？？也许X2C已经给了我们一个答案
 
 # X2C
 
-&ensp;&ensp;&ensp;&ensp;为了即保留xml的优点，又解决它带来的性能问题，我们开发了X2C方案。即在编译生成APK期间，将需要翻译的layout翻译生成对应的java文件，这样对于开发人员来说写布局还是写原来的xml，但对于程序来说，运行时加载的是对应的java文件。
+&ensp;&ensp;&ensp;&ensp;为了即保留xml的优点，又解决它带来的性能问题，我们开发了X2C方案。即在编译生成APK期间，将需要翻译的layout翻译生成对应的java文件，这样对于开发人员来说写布局还是写原来的xml，但对于程序来说，运行时加载的是对应的java文件。    
 &ensp;&ensp;&ensp;&ensp;我们采用APT（Annotation Processor Tool）+ JavaPoet技术来完成编译期间【注解】->【解注解】->【翻译xml】->【生成java】整个流程的操作。
 
 # 性能对比
