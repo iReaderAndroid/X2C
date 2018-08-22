@@ -42,10 +42,10 @@ implementation project(':lib')
 
 #### 3.通过X2C加载布局
 ```java
-X2C.instance().setContentView(this, R.layout.activity_main);
+X2C.setContentView(this, R.layout.activity_main);
 ```
 ```java
-X2C.instance().inflate(this,R.layout.activity_main,null);
+X2C.inflate(this,R.layout.activity_main,null);
 ```
 
 
@@ -85,7 +85,7 @@ X2C.instance().inflate(this,R.layout.activity_main,null);
  * autho chengwei
  * email chengwei@zhangyue.com
  */
-public class X2C_A7f_Activity_Main implements IViewCreator {
+public class X2C_2131296281_Activity_Main implements IViewCreator {
   @Override
   public View createView(Context ctx, int layoutId) {
     	Resources res = ctx.getResources();
@@ -93,7 +93,7 @@ public class X2C_A7f_Activity_Main implements IViewCreator {
         RelativeLayout relativeLayout0 = new RelativeLayout(ctx);
         relativeLayout0.setPadding((int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10,res.getDisplayMetrics())),0,0,0);
 
-        View view1 =(View) new X2C_A7f_Head().createView(ctx,0);
+        View view1 =(View) new X2C_2131296283_Head().createView(ctx,0);
         RelativeLayout.LayoutParams layoutParam1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         view1.setLayoutParams(layoutParam1);
         relativeLayout0.addView(view1);
@@ -119,16 +119,16 @@ public class X2C_A7f_Activity_Main implements IViewCreator {
  * autho chengwei
  * email chengwei@zhangyue.com
  */
-public class X2C_A7f implements IViewCreator {
+public class X2C_2131296283 implements IViewCreator {
   @Override
   public View createView(Context context, int layoutId) {
     	View view;
         switch(layoutId){
         	case 2131296283:
-        		view = new X2C_A7f_Activity_Main().createView(context,2131296283);
+        		view = new X2C_2131296283_Activity_Main().createView(context,2131296283);
         		break;
         	case 2131296284:
-        		view = new X2C_A7f_Head().createView(context,2131296284);
+        		view = new X2C_2131296283_Head().createView(context,2131296284);
         		break;
         	default:
         		view = null;
