@@ -52,8 +52,8 @@ public class LayoutManager {
         mRJava = getR();
     }
 
-    public void setGroupId(int groupName) {
-        this.mGroupId = groupName;
+    public void setGroupId(int groupId) {
+        this.mGroupId = groupId;
     }
 
     public String getLayoutName(int id) {

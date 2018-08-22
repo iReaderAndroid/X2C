@@ -49,7 +49,7 @@ public class LayoutWriter {
                 .addSuperinterface(ClassName.get("com.zhangyue.we.x2c", "IViewCreator"))
                 .addModifiers(Modifier.PUBLIC)
                 .addJavadoc(String.format("WARN!!! dont edit this file\ntranslate from {@link  %s.R.layout.%s}" +
-                        "\nautho chengwei \nemail chengweidev@gmail.com\n", mPkgName, mLayoutName))
+                        "\nautho chengwei \nemail chengwei@zhangyue.com\n", mPkgName, mLayoutName))
                 .build();
 
         JavaFile javaFile = JavaFile.builder("com.zhangyue.we.x2c", typeSpec)

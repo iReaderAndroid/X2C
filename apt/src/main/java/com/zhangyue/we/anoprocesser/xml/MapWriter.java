@@ -56,7 +56,7 @@ public class MapWriter {
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(methodSpec)
                 .addJavadoc(String.format("WARN!!! don't edit this file\n" +
-                        "\nauthor chengwei \nemail chengweidev@gmail.com\n"))
+                        "\nauthor chengwei \nemail chengwei@zhangyue.com\n"))
                 .build();
 
         JavaFile javaFile = JavaFile.builder("com.zhangyue.we.x2c", typeSpec)

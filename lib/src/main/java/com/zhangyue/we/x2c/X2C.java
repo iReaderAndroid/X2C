@@ -55,16 +55,21 @@ public class X2C {
 
     private static View getView(Context context, int layoutId) {
         IViewCreator creator = null;
-        if (sSparseArray.indexOfKey(layoutId) >= 0) {
-            creator = sSparseArray.get(layoutId);
+        int groupId = generateGroupId(layoutId);
+        if (sSparseArray.indexOfKey(groupId) >= 0) {
+            creator = sSparseArray.get(groupId);
         } else {
             try {
                 creator = (IViewCreator) context.getClassLoader()
-                        .loadClass("com.zhangyue.we.x2c.X2C_" + layoutId).newInstance();
+                        .loadClass("com.zhangyue.we.x2c.X2C_" + groupId).newInstance();
             } catch (Exception ignored) {//
             }
-            sSparseArray.put(layoutId, creator);
+            sSparseArray.put(groupId, creator);
         }
         return creator == null ? null : creator.createView(context, layoutId);
+    }
+
+    private static int generateGroupId(int layoutId) {
+        return  layoutId >> 24;
     }
 }
