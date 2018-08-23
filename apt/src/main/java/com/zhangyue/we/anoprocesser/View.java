@@ -321,10 +321,11 @@ public class View {
 
     private void setMargin(StringBuffer stringBuffer, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuffer.append(getObjName()).append(String.format(".setMargins(%s,%s,%s,%s);\n",
+            stringBuffer.append(String.format("%s.setMargins(%s,%s,%s,%s);\n",
+                    mLayoutParamsObj,
                     getWH(value),
-                    getWH(value), 
-                    getWH(value), 
+                    getWH(value),
+                    getWH(value),
                     getWH(value)));
         }
     }
