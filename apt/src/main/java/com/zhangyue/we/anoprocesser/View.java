@@ -208,6 +208,9 @@ public class View {
             case "android:textStyle":
                 setTypeface(stringBuffer, value);
                 break;
+            case "android:layout_margin":
+                setMargin(stringBuffer, value);
+                break;
             case "android:layout_marginLeft":
                 setMarginLeft(stringBuffer, value);
                 break;
@@ -313,6 +316,16 @@ public class View {
             case "android:maxLines":
                 setMaxLines(stringBuffer, value);
                 break;
+        }
+    }
+
+    private void setMargin(StringBuffer stringBuffer, String value) {
+        if (mLayoutParamsObj != null) {
+            stringBuffer.append(getObjName()).append(String.format(".setMargins(%s,%s,%s,%s);\n",
+                    getWH(value),
+                    getWH(value), 
+                    getWH(value), 
+                    getWH(value)));
         }
     }
 
