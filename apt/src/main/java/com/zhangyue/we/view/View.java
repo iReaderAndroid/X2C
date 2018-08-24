@@ -231,11 +231,15 @@ public class View implements ITranslator {
                 return setMargin(stringBuffer, value);
             case "android:layout_marginLeft":
                 return setMarginLeft(stringBuffer, value);
+            case "android:layout_marginStart":
+                return setMarginLeft(stringBuffer, value);
             case "android:tag":
                 return setTag(stringBuffer, value);
             case "android:layout_marginTop":
                 return setMarginTop(stringBuffer, value);
             case "android:layout_marginRight":
+                return setMarginRight(stringBuffer, value);
+            case "android:layout_marginEnd":
                 return setMarginRight(stringBuffer, value);
             case "android:layout_marginBottom":
                 return setMarginBottom(stringBuffer, value);
@@ -288,6 +292,12 @@ public class View implements ITranslator {
                 return setMinWidth(stringBuffer, value);
             case "android:minHeight":
                 return setMinHeight(stringBuffer, value);
+            case "android:layout_weight":
+                return setWeight(stringBuffer, value);
+            case "android:layout_gravity":
+                return setLayoutGravity(stringBuffer, value);
+            case "android:alpha":
+                return setAlpha(stringBuffer, value);
             default:
                 return false;
         }
@@ -314,6 +324,25 @@ public class View implements ITranslator {
     @Override
     public void onAttributeEnd(StringBuffer stringBuffer) {
 
+    }
+
+    private boolean setAlpha(StringBuffer stringBuffer, String value) {
+        stringBuffer.append(String.format("%s.setAlpha(%s);\n", getObjName(), getFloat(value)));
+        return true;
+    }
+
+    private boolean setLayoutGravity(StringBuffer stringBuffer, String value) {
+        if (mLayoutParamsObj != null) {
+            stringBuffer.append(String.format("%s.gravity= %s ;\n", mLayoutParamsObj, getGravity(value)));
+        }
+        return true;
+    }
+
+    private boolean setWeight(StringBuffer stringBuffer, String value) {
+        if (mLayoutParamsObj != null) {
+            stringBuffer.append(String.format("%s.weight= %s ;\n", mLayoutParamsObj, value));
+        }
+        return true;
     }
 
     private boolean setScaleType(StringBuffer stringBuffer, String value) {
@@ -540,8 +569,11 @@ public class View implements ITranslator {
     }
 
     public static String getColor(String value) {
-        if (value.startsWith("#")) {
-
+        if (value.equals("#000")) {
+            return "Color.parseColor(\"#000000\")";
+        } else if (value.equals("#FFF")) {
+            return "Color.parseColor(\"#FFFFFF\")";
+        } else if (value.startsWith("#")) {
             return "Color.parseColor(\"" + value + "\")";
         } else if (value.startsWith("@")) {
             return "res.getColor(R.color." + value.substring(value.indexOf("/") + 1) + ")";
@@ -594,6 +626,10 @@ public class View implements ITranslator {
     private String getGravitySingle(String value) {
         mImports.add("android.view.Gravity");
         switch (value) {
+            case "end":
+                return "Gravity.END";
+            case "start":
+                return "Gravity.START";
             case "left":
                 return "Gravity.LEFT";
             case "top":
