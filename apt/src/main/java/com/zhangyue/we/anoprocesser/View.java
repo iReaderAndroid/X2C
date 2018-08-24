@@ -205,8 +205,17 @@ public class View {
             case "android:background":
                 setBackground(stringBuffer, value);
                 break;
+            case "android:textStyle":
+                setTypeface(stringBuffer, value);
+                break;
+            case "android:layout_margin":
+                setMargin(stringBuffer, value);
+                break;
             case "android:layout_marginLeft":
                 setMarginLeft(stringBuffer, value);
+                break;
+            case "android:tag":
+                setTag(stringBuffer, value);
                 break;
             case "android:layout_marginTop":
                 setMarginTop(stringBuffer, value);
@@ -310,6 +319,22 @@ public class View {
         }
     }
 
+    private void setMargin(StringBuffer stringBuffer, String value) {
+        if (mLayoutParamsObj != null) {
+            stringBuffer.append(String.format("%s.setMargins(%s,%s,%s,%s);\n",
+                    mLayoutParamsObj,
+                    getWH(value),
+                    getWH(value),
+                    getWH(value),
+                    getWH(value)));
+        }
+    }
+
+    private void setTypeface(StringBuffer stringBuffer, String value) {
+        mImports.add("android.graphics.Typeface");
+        stringBuffer.append(String.format("%s.setTypeface(%s);\n", getObjName(), getTextStyle(value)));
+    }
+
     private void setScaleType(StringBuffer stringBuffer, String value) {
         mImports.add("android.widget.ImageView.ScaleType");
         stringBuffer.append(String.format("%s.setScaleType(%s);\n", getObjName(), getScaleType(value)));
@@ -342,6 +367,10 @@ public class View {
 
     private void setText(StringBuffer stringBuffer, String value) {
         stringBuffer.append(String.format("%s.setText(%s);\n", getObjName(), getString(value)));
+    }
+
+    private void setTag(StringBuffer stringBuffer, String value) {
+        stringBuffer.append(String.format("%s.setTag(%s);\n", getObjName(), getString(value)));
     }
 
     private void setMarginLeft(StringBuffer stringBuffer, String value) {
@@ -745,6 +774,17 @@ public class View {
                 return "TextUtils.TruncateAt.MARQUEE";
             default:
                 return "TextUtils.TruncateAt.END";
+        }
+    }
+
+    private String getTextStyle(String value) {
+        switch (value) {
+            case "bold":
+                return "Typeface.DEFAULT_BOLD";
+            case "italic":
+                return "Typeface.ITALIC";
+            default:
+                return "Typeface.DEFAULT";
         }
     }
 
