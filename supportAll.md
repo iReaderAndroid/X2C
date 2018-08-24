@@ -48,6 +48,10 @@
 |android:layout_alignTop|
 |android:layout_alignRight|
 |android:layout_alignBottom|
+|android:layout_marginEnd|
+|android:layout_marginStart|
+|android:paddingStart|
+|android:paddingEnd|
 |...|
 
 
