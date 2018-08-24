@@ -31,6 +31,11 @@
         app:layout_constraintLeft_toRightOf="@id/xml"
         app:layout_constraintTop_toTopOf="@id/xml" />
 
-
+    <ViewStub
+        android:id="@+id/stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

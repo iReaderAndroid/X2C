@@ -1,5 +1,6 @@
 package com.zhangyue.we.view;
 
+import com.zhangyue.we.anoprocesser.Log;
 import com.zhangyue.we.anoprocesser.xml.LayoutManager;
 import com.zhangyue.we.anoprocesser.xml.Style;
 
@@ -86,6 +87,9 @@ public class View implements ITranslator {
                 case "include":
                 case "View":
                     name = "android.view.View";
+                    break;
+                case "ViewStub":
+                    name = "android.view.ViewStub";
                     break;
                 case "WebView":
                     name = "android.webkit.WebView";

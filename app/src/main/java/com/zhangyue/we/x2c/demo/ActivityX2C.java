@@ -2,6 +2,7 @@ package com.zhangyue.we.x2c.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.ViewStub;
 
 import com.zhangyue.we.x2c.X2C;
 import com.zhangyue.we.x2c.ano.Xml;
@@ -16,6 +17,8 @@ public class ActivityX2C extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         X2C.setContentView(this, R.layout.activity_main);
-
+        ViewStub stub = (ViewStub)findViewById(R.id.stub);
+        stub.setLayoutResource(R.layout.stub_layout);
+        stub.inflate();
     }
 }

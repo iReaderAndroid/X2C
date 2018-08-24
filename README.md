@@ -146,50 +146,17 @@ public class X2C_2131296283 implements IViewCreator {
 # 支持的
 * 各种系统控件、自定义控件
 * include标签
-*  应用style
-*  android开放属性
+* viewStub标签
+* 应用style
+* android开放属性
 
-| 属性名称|
-| ------ |
-| android:textSize |
-|android:textColor|
-|android:text|
-|android:background|
-|android:layout_marginLeft|
-|android:layout_marginTop|
-|android:layout_marginRight|
-|android:layout_marginBottom|
-|android:paddingLeft|
-|android:paddingTop|
-|android:paddingRight|
-|android:paddingBottom|
-|android:padding|
-|android:gravity|
-|android:orientation|
-|android:id|
-|android:layout_centerInParent|
-|android:layout_centerVertical|
-|android:layout_centerHorizontal|
-|android:layout_alignParentLeft|
-|android:layout_alignParentTop|
-|android:layout_alignParentRight|
-|android:layout_alignParentBottom|
-|android:layout_above|
-|android:layout_below|
-|android:layout_toLeftOf|
-|android:layout_toRightOf|
-|android:layout_alignLeft|
-|android:layout_alignTop|
-|android:layout_alignRight|
-|android:layout_alignBottom|
-|android:scaleType|
-|android:src|
-|android:visibility|
-|android:clipToPadding|
-|android:ellipsize|
-|android:lineSpacingExtra|
-|android:maxLines|
-|...|
+| 属性名称|属性名称|
+| ------ |------- |
+|android:textSize| app:layout_constraintRight_toLeftOf|
+|android:textColor| app:layout_constraintBottom_toTopOf|
+|android:text| app:layout_constraintTop_toTopOf|
+|android:background| app:layout_constrainedHeight|
+|[查看全部](supportAll.md)|
 
 ## 由使用问题和其他技术问题，欢迎加群交流讨论
 
