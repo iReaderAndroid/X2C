@@ -169,7 +169,7 @@ public class View implements ITranslator {
             translator.onAttributeEnd(stringBuffer);
         }
 
-        if(mParent!=null){
+        if (mParent != null) {
             stringBuffer.append(String.format("%s.setLayoutParams(%s);\n", obj, mLayoutParamsObj));
             stringBuffer.append(String.format("%s.addView(%s);\n", mParent.getObjName(), obj));
         }
@@ -222,8 +222,14 @@ public class View implements ITranslator {
                 return setText(stringBuffer, value);
             case "android:background":
                 return setBackground(stringBuffer, value);
+            case "android:textStyle":
+                return setTypeface(stringBuffer, value);
+            case "android:layout_margin":
+                return setMargin(stringBuffer, value);
             case "android:layout_marginLeft":
                 return setMarginLeft(stringBuffer, value);
+            case "android:tag":
+                return setTag(stringBuffer, value);
             case "android:layout_marginTop":
                 return setMarginTop(stringBuffer, value);
             case "android:layout_marginRight":
@@ -276,6 +282,24 @@ public class View implements ITranslator {
             default:
                 return false;
         }
+    }
+
+    private boolean setMargin(StringBuffer stringBuffer, String value) {
+        if (mLayoutParamsObj != null) {
+            stringBuffer.append(String.format("%s.setMargins(%s,%s,%s,%s);\n",
+                    mLayoutParamsObj,
+                    getWH(value),
+                    getWH(value),
+                    getWH(value),
+                    getWH(value)));
+        }
+        return true;
+    }
+
+    private boolean setTypeface(StringBuffer stringBuffer, String value) {
+        mImports.add("android.graphics.Typeface");
+        stringBuffer.append(String.format("%s.setTypeface(%s);\n", getObjName(), getTextStyle(value)));
+        return true;
     }
 
     @Override
@@ -342,6 +366,11 @@ public class View implements ITranslator {
 
     private boolean setText(StringBuffer stringBuffer, String value) {
         stringBuffer.append(String.format("%s.setText(%s);\n", getObjName(), getString(value)));
+        return true;
+    }
+
+    private boolean setTag(StringBuffer stringBuffer, String value) {
+        stringBuffer.append(String.format("%s.setTag(%s);\n", getObjName(), getString(value)));
         return true;
     }
 
@@ -648,6 +677,17 @@ public class View implements ITranslator {
                 return "TextUtils.TruncateAt.MARQUEE";
             default:
                 return "TextUtils.TruncateAt.END";
+        }
+    }
+
+    private String getTextStyle(String value) {
+        switch (value) {
+            case "bold":
+                return "Typeface.DEFAULT_BOLD";
+            case "italic":
+                return "Typeface.ITALIC";
+            default:
+                return "Typeface.DEFAULT";
         }
     }
 
