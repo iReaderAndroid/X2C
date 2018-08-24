@@ -1,6 +1,5 @@
 package com.zhangyue.we.view;
 
-import com.zhangyue.we.anoprocesser.Log;
 import com.zhangyue.we.anoprocesser.xml.LayoutManager;
 import com.zhangyue.we.anoprocesser.xml.Style;
 
@@ -240,14 +239,20 @@ public class View implements ITranslator {
                 return setMarginRight(stringBuffer, value);
             case "android:layout_marginBottom":
                 return setMarginBottom(stringBuffer, value);
+            case "android:paddingStart":
+                mPaddingLeft = getWH(value);
+                return true;
+            case "android:paddingEnd":
+                mPaddingRight = getWH(value);
+                return true;
             case "android:paddingLeft":
                 mPaddingLeft = getWH(value);
                 return true;
-            case "android:paddingTop":
-                mPaddingTop = getWH(value);
-                return true;
             case "android:paddingRight":
                 mPaddingRight = getWH(value);
+                return true;
+            case "android:paddingTop":
+                mPaddingTop = getWH(value);
                 return true;
             case "android:paddingBottom":
                 mPaddingBottom = getWH(value);
@@ -374,7 +379,15 @@ public class View implements ITranslator {
     }
 
     private boolean setTag(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setTag(%s);\n", getObjName(), getString(value)));
+        if (value.startsWith("@id")) {
+            stringBuffer.append(String.format("%s.setTag(R.id.%s);\n", getObjName(),
+                    value.substring(value.indexOf("/") + 1)));
+        } else if (value.startsWith("@android:id")) {
+            stringBuffer.append(String.format("%s.setTag(android.R.id.%s);\n", getObjName(),
+                    value.substring(value.indexOf("/") + 1)));
+        } else {
+            stringBuffer.append(String.format("%s.setTag(%s);\n", getObjName(), getString(value)));
+        }
         return true;
     }
 
@@ -461,8 +474,13 @@ public class View implements ITranslator {
     }
 
     private boolean setId(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setId(R.id.%s);\n", getObjName(),
-                value.substring(value.indexOf("/") + 1)));
+        if (value.startsWith("@android:id")) {
+            stringBuffer.append(String.format("%s.setId(android.R.id.%s);\n", getObjName(),
+                    value.substring(value.indexOf("/") + 1)));
+        } else {
+            stringBuffer.append(String.format("%s.setId(R.id.%s);\n", getObjName(),
+                    value.substring(value.indexOf("/") + 1)));
+        }
         return true;
     }
 
