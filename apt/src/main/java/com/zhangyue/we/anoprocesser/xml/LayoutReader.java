@@ -1,6 +1,6 @@
 package com.zhangyue.we.anoprocesser.xml;
 
-import com.zhangyue.we.anoprocesser.View;
+import com.zhangyue.we.view.View;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

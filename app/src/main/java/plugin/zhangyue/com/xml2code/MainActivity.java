@@ -8,8 +8,7 @@ import com.zhangyue.we.x2c.ano.Xml;
 import com.zhangyue.we.x2c.demo.R;
 
 
-@Xml(layouts = {R.layout.activity_main
-        , R.layout.head})
+@Xml(layouts = {R.layout.activity_main})
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -17,4 +16,5 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         X2C.setContentView(this, R.layout.activity_main);
     }
+
 }

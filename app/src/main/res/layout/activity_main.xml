@@ -1,27 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="10dp">
-
-    <include
-        android:id="@+id/head"
-        layout="@layout/head"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/ccc"
-        style="@style/bb"
-        android:scaleType="fitXY"
-        android:background="@drawable/broadcast"
-        android:layout_below="@id/head" />
+        android:id="@+id/iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/head"
+        app:layout_constraintDimensionRatio="H,1024:539"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:text="X2C"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</RelativeLayout>
+        android:id="@+id/xml"
+        style="@style/btn"
+        android:text="LEFT"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv" />
+
+    <TextView
+        android:id="@+id/x2c"
+        style="@style/btn"
+        android:background="@color/colorPrimary"
+        android:text="@string/app_name"
+        app:layout_constraintLeft_toRightOf="@id/xml"
+        app:layout_constraintTop_toTopOf="@id/xml" />
+
+
+</android.support.constraint.ConstraintLayout>

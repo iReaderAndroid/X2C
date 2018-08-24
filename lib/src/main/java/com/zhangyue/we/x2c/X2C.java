@@ -53,7 +53,7 @@ public class X2C {
         }
     }
 
-    private static View getView(Context context, int layoutId) {
+    public static View getView(Context context, int layoutId) {
         int group = generateGroupId(layoutId);
         IViewCreator creator = sSparseArray.get(group);
         if (creator == null) {

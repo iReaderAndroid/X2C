@@ -8,14 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="bb">
-        <item name="android:layout_height">100dp</item>
-        <item name="android:layout_width">match_parent</item>
+    <style name="btn">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
-    <style name="bb.aa">
-        <item name="android:background">@drawable/broadcast</item>
-        <item name="android:text">@string/app_name</item>
-    </style>
 
 </resources>
