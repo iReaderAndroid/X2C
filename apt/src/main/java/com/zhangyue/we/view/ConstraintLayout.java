@@ -27,6 +27,8 @@ public class ConstraintLayout implements ITranslator {
                 return setLayoutConstraintRightToRightOf(stringBuffer, value);
             case "app:layout_constraintTop_toBottomOf":
                 return setLayoutConstraintTopToBottomOf(stringBuffer, value);
+            case "app:layout_constraintBottom_toBottomOf":
+                return setLayoutConstraintBottomToBottomOf(stringBuffer, value);
             case "app:layout_constraintLeft_toRightOf":
                 return setLayoutConstraintLeftToRightOf(stringBuffer, value);
             case "app:layout_constraintRight_toLeftOf":
@@ -105,6 +107,7 @@ public class ConstraintLayout implements ITranslator {
                 return setLayoutConstraintHeightPercent(stringBuffer, value);
             case "app:layout_constraintWidth_percent":
                 return setLayoutConstraintWidthPercent(stringBuffer, value);
+
             default:
                 return false;
         }
@@ -356,6 +359,12 @@ public class ConstraintLayout implements ITranslator {
 
     private boolean setLayoutConstraintTopToBottomOf(StringBuffer stringBuffer, String value) {
         stringBuffer.append(String.format("%s.topToBottom = %s ;\n", mLayoutParamsObj, getResourceId(value)));
+        isHandle = true;
+        return true;
+    }
+
+    private boolean setLayoutConstraintBottomToBottomOf(StringBuffer stringBuffer, String value) {
+        stringBuffer.append(String.format("%s.bottomToBottom = %s ;\n", mLayoutParamsObj, getResourceId(value)));
         isHandle = true;
         return true;
     }
