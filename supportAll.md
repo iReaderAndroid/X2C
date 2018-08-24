@@ -52,6 +52,9 @@
 |android:layout_marginStart|
 |android:paddingStart|
 |android:paddingEnd|
+|android:alpha|
+|android:layout_weight|
+|android:layout_gravity|
 |...|
 
 
