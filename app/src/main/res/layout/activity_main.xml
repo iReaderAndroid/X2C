@@ -27,7 +27,7 @@
         android:id="@+id/x2c"
         style="@style/btn"
         android:background="@color/colorPrimary"
-        android:text="@string/app_name"
+        android:text="RIGHT"
         app:layout_constraintLeft_toRightOf="@id/xml"
         app:layout_constraintTop_toTopOf="@id/xml" />
 

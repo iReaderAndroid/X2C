@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        style="@style/btn"
+        android:onClick="startX2C"
+        android:text="X2C" />
+
+    <Button
+        style="@style/btn"
+        android:layout_marginTop="10dp"
+        android:onClick="startXML"
+        android:text="XML" />
+
+
+</LinearLayout>
