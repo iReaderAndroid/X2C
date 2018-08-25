@@ -48,6 +48,17 @@ X2C.setContentView(this, R.layout.activity_main);
 X2C.inflate(this,R.layout.activity_main,null);
 ```
 
+#### 4.配置自定义属性
+
+在module下建立X2C_CONFIG.xml文件，里面配置定义属性和方法的映射关系,如果接收者是view，则写view.否则填params.
+
+```mxl
+<x2c-config>
+    <attr name="app:mixColor" toFunc="view.setMixColor(int)" />
+    <attr name="android:layout_marginTop" toFunc="params.topMargin=int" />
+</x2c-config>
+```
+
 
 # 过程文件
 
@@ -148,6 +159,7 @@ public class X2C_2131296283 implements IViewCreator {
 * include标签
 * viewStub标签
 * 应用style
+* 自定义属性(感谢[Anzhi-Meiying](https://github.com/Anzhi-Meiying)提出的宝贵意见)
 * 系统属性
 
 | 属性名称|属性名称|
@@ -158,17 +170,8 @@ public class X2C_2131296283 implements IViewCreator {
 |android:background| app:layout_constrainedHeight|
 |[查看全部](supportAll.md)|
 
-*  自定义属性
-感谢[Anzhi-Meiying](https://github.com/Anzhi-Meiying)提出的宝贵意见,
-我们只需要在module下建立X2C_CONFIG.xml文件，里面配置具体的自定义属性就可以完成自动翻译
 
 
-```mxl
-<x2c-config>
-    <attr name="app:mixColor" toFunc="view.setMixColor(int)" />
-    <attr name="android:layout_marginTop" toFunc="params.topMargin=int" />
-</x2c-config>
-```
 
 ## 有使用问题和其他技术问题，欢迎加群交流讨论
 
