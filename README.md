@@ -158,9 +158,9 @@ public class X2C_2131296283 implements IViewCreator {
 |android:background| app:layout_constrainedHeight|
 |[查看全部](supportAll.md)|
 
-#  自定义属性
+*  自定义属性
 感谢[Anzhi-Meiying](https://github.com/Anzhi-Meiying)提出的宝贵意见，
-我们只需要在module下建立X2C_CONFIG.xml文件，里面配置具体的自定义属性
+我们只需要在module下建立X2C_CONFIG.xml文件，里面配置具体的自定义属性就可以完成自动翻译
 
 ```java
 <x2c-config>
