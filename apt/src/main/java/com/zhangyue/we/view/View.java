@@ -523,7 +523,6 @@ public class View implements ITranslator {
 
     public static String getColor(String value) {
         if (value.startsWith("#")) {
-
             return "Color.parseColor(\"" + value + "\")";
         } else if (value.startsWith("@")) {
             return "res.getColor(R.color." + value.substring(value.indexOf("/") + 1) + ")";
@@ -532,6 +531,12 @@ public class View implements ITranslator {
         }
     }
 
+    public static String getId(String value) {
+        if (value.contains("id/")) {
+            return "R.id." + value.substring(value.lastIndexOf("/") + 1);
+        }
+        return "0";
+    }
 
     public static String getFloat(String value) {
         return value + "f";
@@ -721,6 +726,7 @@ public class View implements ITranslator {
         list.add(this);
         list.add(new ConstraintLayout(mImports, mLayoutParamsObj));
         list.add(new RelativeLayout(mImports, mLayoutParamsObj));
+        list.add(new CustomAttr(mImports, mLayoutParamsObj, mObjName));
         return list;
     }
 

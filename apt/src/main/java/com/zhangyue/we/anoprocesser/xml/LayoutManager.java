@@ -22,11 +22,31 @@ public class LayoutManager {
     private String mPackageName;
     private int mGroupId;
     private Filer mFiler;
+    /**
+     * key is layoutId, value is javaName
+     */
     private HashMap<Integer, String> mMap;
+    /**
+     * key is layoutName,value is layoutId
+     */
     private HashMap<String, Integer> mRJava;
+    /**
+     * key is layoutName,value is layoutId
+     */
     private HashMap<Integer, String> mRJavaId;
+    /**
+     * key is styleName,value is style
+     */
     private HashMap<String, Style> mStyles;
+    /**
+     * key is layoutName,value is javaName
+     */
     private HashMap<String, String> mTranslateMap;
+
+    /**
+     * key is attrName,value is attr
+     */
+    private HashMap<String, Attr> mAttrs;
 
     private LayoutManager() {
         mMap = new HashMap<>();
@@ -50,6 +70,7 @@ public class LayoutManager {
         getLayoutPath();
         mPackageName = getPackageName();
         mRJava = getR();
+        mAttrs = new Attr2FuncReader(new File(mRootFile, "X2C_CONFIG.xml")).parse();
     }
 
     public void setGroupId(int groupId) {
@@ -211,5 +232,8 @@ public class LayoutManager {
         return rFile;
     }
 
+    public HashMap<String, Attr> getAttrs() {
+        return mAttrs;
+    }
 
 }

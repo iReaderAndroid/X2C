@@ -139,16 +139,16 @@ public class X2C_2131296283 implements IViewCreator {
 }
 
 ```
-# 不支持的
+# 不支持
 *  merge标签 ,在编译期间无法确定xml的parent，所以无法支持
 *  系统style,在编译期间只能查到应用的style列表，无法查询系统style，所以只支持应用内style
 
-# 支持的
+# 支持
 * 各种系统控件、自定义控件
 * include标签
 * viewStub标签
 * 应用style
-* android开放属性
+* 系统属性
 
 | 属性名称|属性名称|
 | ------ |------- |
@@ -158,7 +158,19 @@ public class X2C_2131296283 implements IViewCreator {
 |android:background| app:layout_constrainedHeight|
 |[查看全部](supportAll.md)|
 
-## 由使用问题和其他技术问题，欢迎加群交流讨论
+#  自定义属性
+感谢[Anzhi-Meiying](https://github.com/Anzhi-Meiying)提出的宝贵意见，
+我们只需要在module下建立X2C_CONFIG.xml文件，里面配置具体的自定义属性
+
+```java
+<x2c-config>
+    <attr name="app:mixColor" toFunc="view.setMixColor(int)" />
+    <attr name="android:layout_marginTop" toFunc="params.topMargin=int" />
+</x2c-config>
+
+```
+
+## 有使用问题和其他技术问题，欢迎加群交流讨论
 
 > QQ群：`558449447`，添加请注明来自`X2C`
 >

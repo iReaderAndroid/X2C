@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="CustomView">
+        <attr name="mixColor">
+            <flag name="red" value="1" />
+            <flag name="black" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+</resources>

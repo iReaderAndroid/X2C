@@ -28,8 +28,15 @@
         style="@style/btn"
         android:background="@color/colorPrimary"
         android:text="RIGHT"
-        app:layout_constraintLeft_toRightOf="@id/xml"
+        app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/xml" />
+
+    <com.zhangyue.we.x2c.demo.CustomView
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/x2c"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:mixColor="black|red" />
 
     <ViewStub
         android:id="@+id/stub"

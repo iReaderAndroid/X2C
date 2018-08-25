@@ -1,0 +1,16 @@
+<x2c-config>
+
+    <!--针对view的自定义属性写法-->
+    <!--“view”代表调用对象是view-->
+    <!--“setMixColor” 调用的具体方法 -->
+    <!-- “int” 表示入参的类型-->
+    <!--具体解析过程参考CustomAttr-->
+    <attr name="app:mixColor" toFunc="view.setMixColor(int)" />
+
+    <!--针对layoutParams自定义属性写法-->
+    <!--“params”代表调用对象是layoutParams-->
+    <!--“topMargin” 修改的成员变量 -->
+    <!-- “int” 表示入参的类型-->
+    <attr name="android:layout_marginTop" toFunc="params.topMargin=int" />
+
+</x2c-config>
