@@ -40,15 +40,8 @@ implementation project(':lib')
 @Xml(layouts = {R.layout.activity_main})
 ```
 
-#### 3.通过X2C加载布局
-```java
-X2C.setContentView(this, R.layout.activity_main);
-```
-```java
-X2C.inflate(this,R.layout.activity_main,null);
-```
 
-#### 4.配置自定义属性
+#### 3.配置自定义属性(没有可不配)
 
 在module下建立X2C_CONFIG.xml文件，里面配置定义属性和方法的映射关系,如果接收者是view，则写view.否则填params.
 
@@ -57,6 +50,14 @@ X2C.inflate(this,R.layout.activity_main,null);
     <attr name="app:mixColor" toFunc="view.setMixColor(int)" />
     <attr name="android:layout_marginTop" toFunc="params.topMargin=int" />
 </x2c-config>
+```
+
+#### 4.通过X2C加载布局
+```java
+X2C.setContentView(this, R.layout.activity_main);
+```
+```java
+X2C.inflate(this,R.layout.activity_main,null);
 ```
 
 
