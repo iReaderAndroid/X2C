@@ -1,5 +1,6 @@
 package com.zhangyue.we.view;
 
+import com.zhangyue.we.anoprocesser.Log;
 import com.zhangyue.we.anoprocesser.xml.LayoutManager;
 import com.zhangyue.we.anoprocesser.xml.Style;
 
