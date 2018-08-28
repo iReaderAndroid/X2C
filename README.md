@@ -159,6 +159,7 @@ public class X2C_2131296283 implements IViewCreator {
 * 各种系统控件、自定义控件
 * include标签
 * viewStub标签
+* fragment标签(感谢[Dreamskya](https://github.com/Dreamskya))提出宝贵意见
 * 应用style
 * 自定义属性(感谢[Anzhi-Meiying](https://github.com/Anzhi-Meiying)提出的宝贵意见)
 * 系统属性
