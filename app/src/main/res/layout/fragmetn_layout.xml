@@ -4,12 +4,14 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical">
 
 
    <TextView
-       android:id="@+id/a"
+       android:gravity="center"
+       android:background="#ff0000"
+       android:text="i am fragment"
+       android:textColor="@android:color/white"
        android:layout_width="match_parent"
        android:layout_height="match_parent" />
 

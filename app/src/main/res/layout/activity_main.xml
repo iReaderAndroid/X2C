@@ -45,7 +45,6 @@
         android:name="com.zhangyue.we.x2c.demo.MyFragment"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="#ff0000"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/xml" />
 

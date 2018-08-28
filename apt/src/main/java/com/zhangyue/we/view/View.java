@@ -540,8 +540,8 @@ public class View implements ITranslator {
 
     private boolean setId(StringBuffer stringBuffer, String value) {
         if (value.startsWith("@android:id")) {
-             mId= "android.R.id." + value.substring(value.indexOf("/") + 1);
-             stringBuffer.append(String.format("%s.setId(%s);\n", getObjName(),mId));
+            mId = "android.R.id." + value.substring(value.indexOf("/") + 1);
+            stringBuffer.append(String.format("%s.setId(%s);\n", getObjName(), mId));
         } else {
             mId = "R.id." + value.substring(value.indexOf("/") + 1);
             stringBuffer.append(String.format("%s.setId(%s);\n", getObjName(), mId));
@@ -611,6 +611,8 @@ public class View implements ITranslator {
             return "Color.parseColor(\"#FFFFFF\")";
         } else if (value.startsWith("#")) {
             return "Color.parseColor(\"" + value + "\")";
+        } else if (value.startsWith("@android:color")) {
+            return "res.getColor(android.R.color." + value.substring(value.indexOf("/") + 1) + ")";
         } else if (value.startsWith("@")) {
             return "res.getColor(R.color." + value.substring(value.indexOf("/") + 1) + ")";
         } else {
