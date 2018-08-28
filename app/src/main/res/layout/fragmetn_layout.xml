@@ -8,16 +8,10 @@
     android:orientation="vertical">
 
 
-    <Button
-        style="@style/btn"
-        android:onClick="startX2C"
-        android:text="X2C" />
-
-    <Button
-        style="@style/btn"
-        android:layout_marginTop="10dp"
-        android:onClick="startXML"
-        android:text="XML" />
+   <TextView
+       android:id="@+id/a"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" />
 
 
 </LinearLayout>

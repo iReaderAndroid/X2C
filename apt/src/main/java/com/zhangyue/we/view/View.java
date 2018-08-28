@@ -27,6 +27,8 @@ public class View implements ITranslator {
     protected TreeSet<String> mImports;
     private HashMap<String, String> mStyleAttributes;
     private int mIndex;
+    private String mId;
+    private String mAndroidName;
     private String mPadding = "0";
     private String mPaddingLeft = "0";
     private String mPaddingTop = "0";
@@ -92,6 +94,9 @@ public class View implements ITranslator {
                     break;
                 case "WebView":
                     name = "android.webkit.WebView";
+                    break;
+                case "fragment":
+                    name = "android.widget.FrameLayout";
                     break;
                 default:
                     name = "android.widget." + name;
@@ -183,6 +188,44 @@ public class View implements ITranslator {
             stringBuffer.append(getObjName()).append(String.format(".setPadding(%s,%s,%s,%s);\n", mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom));
         }
         stringBuffer.append("\n");
+
+        if (mTagName.equals("fragment")) {
+
+            if (mId == null) {
+                Log.e("fragment label must set android:id");
+            }
+
+            if (mAndroidName == null) {
+                Log.e("fragment label must set android:name");
+            }
+
+            mImports.add("android.app.FragmentManager");
+            mImports.add("android.app.FragmentTransaction");
+            mImports.add("android.os.Handler");
+            mImports.add("android.app.Activity");
+            mImports.add(mAndroidName);
+
+            int index = getRootView().mIndex;
+            String handler = "handler" + index;
+            String activity = "activity" + index;
+
+            stringBuffer.append(String.format("final Activity %s = (Activity) ctx;\n", activity));
+            stringBuffer.append(String.format("Handler %s = new Handler();\n", handler));
+            stringBuffer.append(String.format("%s.post(new Runnable() {\n", handler));
+            stringBuffer.append("  @Override\n");
+            stringBuffer.append("  public void run() {\n");
+            stringBuffer.append(String.format("    %s.getFragmentManager()" +
+                            "\n\t\t.beginTransaction()" +
+                            "\n\t\t.replace(%s, new %s())" +
+                            "\n\t\t.commitAllowingStateLoss();\n"
+                    , activity, mId, mAndroidName.substring(mAndroidName.lastIndexOf(".") + 1)));
+            stringBuffer.append("     }\n");
+            stringBuffer.append(" });\n");
+        }
+
+        stringBuffer.append("\n");
+
+
         return stringBuffer.toString();
     }
 
@@ -298,6 +341,9 @@ public class View implements ITranslator {
                 return setLayoutGravity(stringBuffer, value);
             case "android:alpha":
                 return setAlpha(stringBuffer, value);
+            case "android:name":
+                mAndroidName = value;
+                return true;
             default:
                 return false;
         }
@@ -504,11 +550,11 @@ public class View implements ITranslator {
 
     private boolean setId(StringBuffer stringBuffer, String value) {
         if (value.startsWith("@android:id")) {
-            stringBuffer.append(String.format("%s.setId(android.R.id.%s);\n", getObjName(),
-                    value.substring(value.indexOf("/") + 1)));
+             mId= "android.R.id." + value.substring(value.indexOf("/") + 1);
+             stringBuffer.append(String.format("%s.setId(%s);\n", getObjName(),mId));
         } else {
-            stringBuffer.append(String.format("%s.setId(R.id.%s);\n", getObjName(),
-                    value.substring(value.indexOf("/") + 1)));
+            mId = "R.id." + value.substring(value.indexOf("/") + 1);
+            stringBuffer.append(String.format("%s.setId(%s);\n", getObjName(), mId));
         }
         return true;
     }
@@ -582,6 +628,12 @@ public class View implements ITranslator {
         }
     }
 
+    public static String getId(String value) {
+        if (value.contains("id/")) {
+            return "R.id." + value.substring(value.lastIndexOf("/") + 1);
+        }
+        return "0";
+    }
 
     public static String getFloat(String value) {
         return value + "f";
@@ -775,6 +827,7 @@ public class View implements ITranslator {
         list.add(this);
         list.add(new ConstraintLayout(mImports, mLayoutParamsObj));
         list.add(new RelativeLayout(mImports, mLayoutParamsObj));
+        list.add(new CustomAttr(mImports, mLayoutParamsObj, mObjName));
         return list;
     }
 

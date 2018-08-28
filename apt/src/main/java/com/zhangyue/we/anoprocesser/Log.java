@@ -19,4 +19,10 @@ public class Log {
             sMessager.printMessage(Diagnostic.Kind.OTHER, msg);
         }
     }
+
+    public static void e(String msg) {
+        if (sMessager != null) {
+            sMessager.printMessage(Diagnostic.Kind.ERROR, msg);
+        }
+    }
 }
