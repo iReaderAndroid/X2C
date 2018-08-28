@@ -29,4 +29,3 @@ dependencies {
 
 }
 
-apply from: 'publish_jc.gradle'
