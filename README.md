@@ -32,7 +32,7 @@
 #### 1.导入依赖
 ```java
 annotationProcessor 'com.zhangyue.we.x2c:apt:2.0.0'
-    implementation 'com.zhangyue.we.x2c:lib:2.0.0'
+implementation 'com.zhangyue.we.x2c:lib:2.0.0'
 ```
 
 #### 2.添加注解
