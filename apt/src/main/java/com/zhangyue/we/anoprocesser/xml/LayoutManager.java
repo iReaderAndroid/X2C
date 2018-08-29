@@ -213,23 +213,17 @@ public class LayoutManager {
 
     private File getRFile() {
         String sep = File.separator;
-        String stringBuilder = mRootFile.getAbsolutePath() + sep + "build" + sep +
-                "generated" + sep + "source" + sep + "r";
-        File rDir = new File(stringBuilder);
-
-        File files[] = rDir.listFiles();
-        if (files == null)
-            return null;
-        File rFile = null;
-        long time = 0;
-        for (File file : files) {
-            File f = new File(file.getAbsolutePath() + sep + mPackageName.replace(".", sep) + sep + "R.java");
-            if (f.lastModified() > time) {
-                rFile = f;
-                time = f.lastModified();
-            }
+        String basePath = "";
+        try {
+            JavaFileObject filerSourceFile = mFiler
+                    .createSourceFile("test");
+            basePath = filerSourceFile.toUri().getPath()
+                    .replace("apt", "r")
+                    .replace("test.java", "");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return rFile;
+        return new File(basePath, mPackageName.replace(".", sep) + sep + "R.java");
     }
 
     public HashMap<String, Attr> getAttrs() {
