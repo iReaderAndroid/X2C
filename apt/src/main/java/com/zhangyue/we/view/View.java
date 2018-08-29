@@ -203,19 +203,39 @@ public class View implements ITranslator {
             mImports.add("android.app.FragmentManager");
             mImports.add("android.app.FragmentTransaction");
             mImports.add("android.app.Activity");
+            mImports.add("java.lang.reflect.Method");
             mImports.add(mAndroidName);
 
             stringBuffer.append(String.format("((Activity) ctx).getFragmentManager()" +
                             "\n\t\t\t\t.beginTransaction()" +
                             "\n\t\t\t\t.replace(%s, new %s())" +
-                            "\n\t\t\t\t.commitNow();\n"
+                            "\n\t\t\t\t.commit();\n"
                     , mId, mAndroidName.substring(mAndroidName.lastIndexOf(".") + 1)));
 
+
+            String fm = "fm" + getRootView().mIndex;
+
+            stringBuffer.append(String.format("FragmentManager %s = ((Activity)ctx).getFragmentManager();\n", fm));
+            stringBuffer.append(String.format("Class clz = %s.getClass();\n", fm));
+            stringBuffer.append("Method method;\n");
+            stringBuffer.append("while (clz != null) {\n");
+            stringBuffer.append("\ttry {\n");
+            stringBuffer.append("\t\tmethod = clz.getDeclaredMethod(\"execPendingActions\");\n ");
+            stringBuffer.append("\t\tif (method != null) {\n");
+            stringBuffer.append("\t\t\tmethod.setAccessible(true);\n");
+            stringBuffer.append(String.format("\t\t\tmethod.invoke(%s);\n",fm));
+            stringBuffer.append("\t\t\tbreak;\n");
+            stringBuffer.append("\t\t} else {\n");
+            stringBuffer.append("\t\t\tclz = clz.getSuperclass();\n");
+            stringBuffer.append("\t\t }\n");
+            stringBuffer.append("\t} catch (Exception e) {\n");
+            stringBuffer.append("\t\tclz = clz.getSuperclass();\n");
+            stringBuffer.append("\t}\n");
+            stringBuffer.append("}\n");
+
+            stringBuffer.append("\n");
+
         }
-
-        stringBuffer.append("\n");
-
-
         return stringBuffer.toString();
     }
 
