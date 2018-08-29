@@ -177,9 +177,9 @@ public class X2C_2131296283 implements IViewCreator {
 
 ## 有使用问题和其他技术问题，欢迎加群交流讨论
 
-> QQ群：`558449447`，添加请注明来自`X2C`
+> QQ群：`870956525`，添加请注明来自`X2C`
 >
-> <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=4464e9ee4fc8b05ee3c4eeb4f4be97469c1cfe46cded6b00f4a887ebebb60916"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Android技术交流分享" title="Android技术交流分享"></a>
+> <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=4464e9ee4fc8b05ee3c4eeb4f4be97469c1cfe46cded6b00f4a887ebebb60916"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="掌阅X2C交流群" title="掌阅X2C交流群"></a>
 >
 > 欢迎各位使用，该项目会持续维护。
 >
