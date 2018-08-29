@@ -208,7 +208,7 @@ public class View implements ITranslator {
             stringBuffer.append(String.format("((Activity) ctx).getFragmentManager()" +
                             "\n\t\t\t\t.beginTransaction()" +
                             "\n\t\t\t\t.replace(%s, new %s())" +
-                            "\n\t\t\t\t.commitAllowingStateLoss();\n"
+                            "\n\t\t\t\t.commitNow();\n"
                     , mId, mAndroidName.substring(mAndroidName.lastIndexOf(".") + 1)));
 
         }
