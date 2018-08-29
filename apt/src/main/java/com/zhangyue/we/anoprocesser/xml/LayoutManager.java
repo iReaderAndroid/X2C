@@ -223,10 +223,21 @@ public class LayoutManager {
         File rFile = null;
         long time = 0;
         for (File file : files) {
-            File f = new File(file.getAbsolutePath() + sep + mPackageName.replace(".", sep) + sep + "R.java");
-            if (f.lastModified() > time) {
-                rFile = f;
-                time = f.lastModified();
+            if (file.getName().equals("debug") || file.getName().equals("release")) {
+                File f = new File(file.getAbsolutePath() + sep + mPackageName.replace(".", sep) + sep + "R.java");
+                if (f.lastModified() > time) {
+                    rFile = f;
+                    time = f.lastModified();
+                }
+            } else {
+                //使用Flavor打包渠道包处理
+                for (File file2 : file.listFiles()) {
+                    File f = new File(file2.getAbsolutePath() + sep + mPackageName.replace(".", sep) + sep + "R.java");
+                    if (f.lastModified() > time) {
+                        rFile = f;
+                        time = f.lastModified();
+                    }
+                }
             }
         }
         return rFile;
