@@ -9,14 +9,14 @@
 
 
     <Button
+        android:id="@+id/x2c"
         style="@style/btn"
-        android:onClick="startX2C"
         android:text="X2C" />
 
     <Button
+        android:id="@+id/xml"
         style="@style/btn"
         android:layout_marginTop="10dp"
-        android:onClick="startXML"
         android:text="XML" />
 
 

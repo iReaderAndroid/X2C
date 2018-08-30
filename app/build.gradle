@@ -27,4 +27,7 @@ dependencies {
     annotationProcessor  project(':apt')
     compile project(':lib')
     implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha2'
+
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
