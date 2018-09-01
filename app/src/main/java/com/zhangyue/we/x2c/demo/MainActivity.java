@@ -2,9 +2,10 @@ package com.zhangyue.we.x2c.demo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingX2C;
 import android.os.Bundle;
+import com.zhangyue.we.x2c.demo.databinding.ActivityBinding;
 
-import com.zhangyue.we.x2c.X2C;
 import com.zhangyue.we.x2c.ano.Xml;
 
 import butterknife.ButterKnife;
@@ -17,7 +18,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        X2C.setContentView(this, R.layout.activity);
+        ActivityBinding binding = DataBindingX2C.setContentView(this, R.layout.activity);
+        binding.setBean(new Bean());
         ButterKnife.bind(this);
     }
 

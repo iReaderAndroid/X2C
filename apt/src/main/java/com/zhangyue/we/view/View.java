@@ -35,21 +35,32 @@ public class View implements ITranslator {
     private String mPaddingTop = "0";
     private String mPaddingRight = "0";
     private String mPaddingBottom = "0";
+    private boolean isDataBinding;
+    private String mLayoutName;
+    private int mDataBindingIndex;
 
     public View(String packageName, String name, Attributes attributes) {
-        mImports = new TreeSet<>();
-        mPackageName = packageName;
-        mName = getName(name);
-        mTagName = name;
-        mAttributes = attributes;
+        this.mImports = new TreeSet<>();
+        this.mPackageName = packageName;
+        this.mName = getName(name);
+        this.mTagName = name;
+        this.mAttributes = attributes;
 
-        mImports.add("android.content.res.Resources");
-        mImports.add("android.view.View");
-        mImports.add("android.util.TypedValue");
-        mImports.add("android.graphics.Color");
-        mImports.add("android.view.ViewGroup");
-        mImports.add(String.format("%s.R", mPackageName));
+        this.mImports.add("android.content.res.Resources");
+        this.mImports.add("android.view.View");
+        this.mImports.add("android.util.TypedValue");
+        this.mImports.add("android.graphics.Color");
+        this.mImports.add("android.view.ViewGroup");
+        this.mImports.add(String.format("%s.R", mPackageName));
 
+    }
+
+    public void setIsDataBinding(boolean isDataBinding) {
+        this.isDataBinding = isDataBinding;
+    }
+
+    public void setLayoutName(String layoutName) {
+        this.mLayoutName = layoutName;
     }
 
     public void setParent(View parent) {
@@ -57,8 +68,6 @@ public class View implements ITranslator {
         if (parent != null) {
             parent.addChilden(this);
         }
-
-
         mViewStr = generateView(mAttributes);
     }
 
@@ -167,6 +176,10 @@ public class View implements ITranslator {
         for (int i = 0; i < N; i++) {
             key = attributes.getQName(i);
             value = attributes.getValue(i);
+            if (value.startsWith("@{")) {
+                isDataBinding = true;
+                break;
+            }
             for (ITranslator translator : translators) {
                 if (translator.translate(stringBuffer, key, value)) {
                     break;
@@ -188,7 +201,6 @@ public class View implements ITranslator {
         } else if (!mPaddingLeft.equals("0") || !mPaddingTop.equals("0") || !mPaddingRight.equals("0") || !mPaddingBottom.equals("0")) {
             stringBuffer.append(getObjName()).append(String.format(".setPadding(%s,%s,%s,%s);\n", mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom));
         }
-        stringBuffer.append("\n");
 
         if (mTagName.equals("fragment")) {
 
@@ -223,7 +235,7 @@ public class View implements ITranslator {
             stringBuffer.append("\t\tmethod = clz.getDeclaredMethod(\"execPendingActions\");\n ");
             stringBuffer.append("\t\tif (method != null) {\n");
             stringBuffer.append("\t\t\tmethod.setAccessible(true);\n");
-            stringBuffer.append(String.format("\t\t\tmethod.invoke(%s);\n",fm));
+            stringBuffer.append(String.format("\t\t\tmethod.invoke(%s);\n", fm));
             stringBuffer.append("\t\t\tbreak;\n");
             stringBuffer.append("\t\t} else {\n");
             stringBuffer.append("\t\t\tclz = clz.getSuperclass();\n");
@@ -236,6 +248,16 @@ public class View implements ITranslator {
             stringBuffer.append("\n");
 
         }
+
+        if (isDataBinding) {
+            if (mParent == null) {
+                setTag(stringBuffer, "layout/" + mLayoutName + "_" + mDataBindingIndex++);
+            } else {
+                setTag(stringBuffer, "binding_" + getRootView().mDataBindingIndex++);
+            }
+        }
+
+        stringBuffer.append("\n");
         return stringBuffer.toString();
     }
 

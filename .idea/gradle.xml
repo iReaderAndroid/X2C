@@ -11,6 +11,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/apt" />
             <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/plugin" />
+            <option value="$PROJECT_DIR$/sup-databinding" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

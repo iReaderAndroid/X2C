@@ -39,6 +39,10 @@ public class X2C {
      * @param layoutId layout的资源id
      */
     public static View inflate(Context context, int layoutId, ViewGroup parent) {
+        return inflate(context, layoutId, parent, true);
+    }
+
+    public static View inflate(Context context, int layoutId, ViewGroup parent, boolean attach) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
@@ -81,6 +85,6 @@ public class X2C {
     }
 
     private static int generateGroupId(int layoutId) {
-        return  layoutId >> 24;
+        return layoutId >> 24;
     }
 }

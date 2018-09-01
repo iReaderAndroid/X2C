@@ -19,15 +19,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    annotationProcessor  project(':apt')
-    compile project(':lib')
+
     implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha2'
 
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+
+    annotationProcessor project(':apt')
+    compile project(':lib')
+    if (android.dataBinding.enabled) {
+        compile project(':sup-databinding')
+    }
+
 }

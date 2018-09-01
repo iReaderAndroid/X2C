@@ -47,6 +47,7 @@ public class LayoutReader {
     private class XmlHandler extends DefaultHandler {
         private Stack<View> mStack;
         private View mRootView;
+        private boolean isDataBinding;
 
         @Override
         public void startDocument() throws SAXException {
@@ -57,12 +58,14 @@ public class LayoutReader {
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             View view = createView(qName, attributes);
-            if (mStack.size() > 0) {
-                view.setParent(mStack.get(mStack.size() - 1));
-            } else {
-                view.setParent(null);
+            if (view != null) {
+                if (mStack.size() > 0) {
+                    view.setParent(mStack.get(mStack.size() - 1));
+                } else {
+                    view.setParent(null);
+                }
+                mStack.push(view);
             }
-            mStack.push(view);
             super.startElement(uri, localName, qName, attributes);
         }
 
@@ -70,15 +73,17 @@ public class LayoutReader {
         public void endElement(String uri, String localName, String qName) throws SAXException {
             super.endElement(uri, localName, qName);
 
-            View view = mStack.pop();
-            if (mStack.size() == 0) {
-                mRootView = view;
-                StringBuffer stringBuffer = new StringBuffer();
-                mRootView.translate(stringBuffer);
-                stringBuffer.append("return ").append(mRootView.getObjName());
-                LayoutWriter writer = new LayoutWriter(stringBuffer.toString(), mFiler, mName, mPackageName
-                        , mLayoutName, mRootView.getImports());
-                writer.write();
+            if (mStack.size() > 0) {
+                View view = mStack.pop();
+                if (mStack.size() == 0) {
+                    mRootView = view;
+                    StringBuffer stringBuffer = new StringBuffer();
+                    mRootView.translate(stringBuffer);
+                    stringBuffer.append("return ").append(mRootView.getObjName());
+                    LayoutWriter writer = new LayoutWriter(stringBuffer.toString(), mFiler, mName, mPackageName
+                            , mLayoutName, mRootView.getImports());
+                    writer.write();
+                }
             }
         }
 
@@ -86,11 +91,21 @@ public class LayoutReader {
         public void endDocument() throws SAXException {
             super.endDocument();
         }
+
+        private View createView(String name, Attributes attributes) {
+            if (name.equals("layout") || name.equals("data") || name.equals("variable")) {
+                isDataBinding = true;
+                return null;
+            }
+            View view = new View(mPackageName, name, attributes);
+            if (mStack.size() == 0) {
+                view.setIsDataBinding(isDataBinding);
+            }
+            view.setLayoutName(mLayoutName);
+            return view;
+        }
     }
 
-    private View createView(String name, Attributes attributes) {
-        return new View(mPackageName, name, attributes);
-    }
 
     private String getJavaName(int groupId, String name) {
         String retName = groupId + "_" + name;

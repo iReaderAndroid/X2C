@@ -1,3 +1,4 @@
-include ':app'
+include ':app', ':sup-databinding'
 include ':apt'
 include ':lib'
+include ':plugin'
