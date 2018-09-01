@@ -156,6 +156,8 @@ public class X2C_2131296283 implements IViewCreator {
 *  系统style,在编译期间只能查到应用的style列表，无法查询系统style，所以只支持应用内style
 
 # 支持
+* 兼容ButterKnifer
+* 兼容DataBinding
 * 各种系统控件、自定义控件
 * include标签
 * viewStub标签
@@ -171,7 +173,6 @@ public class X2C_2131296283 implements IViewCreator {
 |android:text| app:layout_constraintTop_toTopOf|
 |android:background| app:layout_constrainedHeight|
 |[查看全部](supportAll.md)|
-
 
 
 
