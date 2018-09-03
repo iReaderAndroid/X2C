@@ -53,7 +53,7 @@ public class X2C {
             }
             return view;
         } else {
-            return LayoutInflater.from(context).inflate(layoutId, parent);
+            return LayoutInflater.from(context).inflate(layoutId, parent, attach);
         }
     }
 
