@@ -5,11 +5,9 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url uri('/repo') }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'com.zhangyue.we.x2c:plugin:1.0.0'
     }
 }
 
@@ -17,7 +15,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url uri('/repo') }
     }
 }
 

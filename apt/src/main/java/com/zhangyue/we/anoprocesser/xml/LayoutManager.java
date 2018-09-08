@@ -101,7 +101,6 @@ public class LayoutManager {
     public String translate(String layoutName) {
         if (mLayouts.size() == 0) {
             mLayouts = scanLayouts(mRootFile);
-            Log.w(mLayouts.toString());
         }
         String fileName = null;
         Integer layoutId = getLayoutId(layoutName);
@@ -255,7 +254,6 @@ public class LayoutManager {
             }
         }
 
-        Log.w("mPkgName " + mPackageName);
     }
 
     private HashMap<String, Integer> getR() {
