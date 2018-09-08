@@ -58,11 +58,14 @@ public class X2C {
     }
 
     public static View getView(Context context, int layoutId) {
-        int group = generateGroupId(layoutId);
-        IViewCreator creator = sSparseArray.get(group);
+        IViewCreator creator = sSparseArray.get(layoutId);
         if (creator == null) {
             try {
-                creator = (IViewCreator) context.getClassLoader().loadClass("com.zhangyue.we.x2c.X2C_" + group).newInstance();
+                int group = generateGroupId(layoutId);
+                String layoutName = context.getResources().getResourceName(layoutId);
+                layoutName = layoutName.substring(layoutName.lastIndexOf("/") + 1);
+                String clzName = "com.zhangyue.we.x2c.X2C" + group + "_" + layoutName;
+                creator = (IViewCreator) context.getClassLoader().loadClass(clzName).newInstance();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -71,15 +74,15 @@ public class X2C {
             if (creator == null) {
                 creator = new DefaultCreator();
             }
-            sSparseArray.put(group, creator);
+            sSparseArray.put(layoutId, creator);
         }
-        return creator.createView(context, layoutId);
+        return creator.createView(context);
     }
 
     private static class DefaultCreator implements IViewCreator {
 
         @Override
-        public View createView(Context context, int layoutId) {
+        public View createView(Context context) {
             return null;
         }
     }

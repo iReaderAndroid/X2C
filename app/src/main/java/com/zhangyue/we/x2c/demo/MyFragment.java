@@ -14,7 +14,7 @@ import com.zhangyue.we.x2c.ano.Xml;
  * @author：chengwei 2018/8/28
  * @description
  */
-@Xml(layouts = R.layout.fragmetn_layout)
+@Xml(layouts = "fragmetn_layout")
 public class MyFragment extends Fragment {
 
 

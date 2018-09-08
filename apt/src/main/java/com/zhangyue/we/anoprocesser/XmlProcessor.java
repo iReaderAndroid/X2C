@@ -13,6 +13,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 
 /**
@@ -23,7 +24,7 @@ import javax.lang.model.element.TypeElement;
 @SupportedAnnotationTypes("com.zhangyue.we.x2c.ano.Xml")
 public class XmlProcessor extends AbstractProcessor {
 
-    private int mGroupId =-1;
+    private int mGroupId = -1;
     private LayoutManager mLayoutMgr;
 
     @Override
@@ -37,24 +38,24 @@ public class XmlProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         Set<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(Xml.class);
-        TreeSet<Integer> layouts = new TreeSet<>();
+        TreeSet<String> layouts = new TreeSet<>();
         for (Element element : elements) {
             Xml xml = element.getAnnotation(Xml.class);
-            int[] ids = xml.layouts();
-            for (int id : ids) {
-                layouts.add(id);
+            String[] names = xml.layouts();
+            for (String name : names) {
+                layouts.add(name);
             }
         }
 
-        for (Integer id : layouts) {
-            if (mGroupId == -1){
-                mGroupId = (id >> 24);
+        for (String name : layouts) {
+            if (mGroupId == -1 && mLayoutMgr.getLayoutId(name) != null) {
+                mGroupId = (mLayoutMgr.getLayoutId(name) >> 24);
             }
             mLayoutMgr.setGroupId(mGroupId);
-            mLayoutMgr.translate(mLayoutMgr.getLayoutName(id));
+            mLayoutMgr.translate(name);
         }
 
-        mLayoutMgr.generateMap();
+        mLayoutMgr.printTranslate();
         return false;
     }
 

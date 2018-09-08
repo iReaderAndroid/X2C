@@ -1,7 +1,5 @@
 package com.zhangyue.we.anoprocesser.xml;
 
-import com.zhangyue.we.anoprocesser.Log;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

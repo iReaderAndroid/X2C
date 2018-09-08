@@ -9,5 +9,5 @@ import android.view.View;
  * @description
  */
 public interface IViewCreator {
-    View createView(Context context, int layoutId);
+    View createView(Context context);
 }

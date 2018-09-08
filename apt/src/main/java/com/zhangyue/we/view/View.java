@@ -36,6 +36,7 @@ public class View implements ITranslator {
     private String mPaddingRight = "0";
     private String mPaddingBottom = "0";
     private boolean isDataBinding;
+    private String mDirName;
     private String mLayoutName;
     private int mDataBindingIndex;
 
@@ -53,6 +54,10 @@ public class View implements ITranslator {
         this.mImports.add("android.view.ViewGroup");
         this.mImports.add(String.format("%s.R", mPackageName));
 
+    }
+
+    public void setDirName(String dirName) {
+        this.mDirName = dirName;
     }
 
     public void setIsDataBinding(boolean isDataBinding) {
@@ -251,7 +256,7 @@ public class View implements ITranslator {
 
         if (isDataBinding) {
             if (mParent == null) {
-                setTag(stringBuffer, "layout/" + mLayoutName + "_" + mDataBindingIndex++);
+                setTag(stringBuffer, mDirName + "/" + mLayoutName + "_" + mDataBindingIndex++);
             } else {
                 setTag(stringBuffer, "binding_" + getRootView().mDataBindingIndex++);
             }

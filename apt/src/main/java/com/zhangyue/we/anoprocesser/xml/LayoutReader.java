@@ -1,5 +1,6 @@
 package com.zhangyue.we.anoprocesser.xml;
 
+import com.zhangyue.we.anoprocesser.Util;
 import com.zhangyue.we.view.View;
 
 import org.xml.sax.Attributes;
@@ -21,6 +22,7 @@ public class LayoutReader {
     private Filer mFiler;
     private SAXParser mParser;
     private String mName;
+    private String mFullName;
     private String mLayoutName;
     private String mPackageName;
     private File mFile;
@@ -35,13 +37,12 @@ public class LayoutReader {
 
     public String parse() {
         try {
-            File xmlFile = new File(mFile + File.separator + mLayoutName + ".xml");
             mParser = SAXParserFactory.newInstance().newSAXParser();
-            mParser.parse(xmlFile, new XmlHandler());
+            mParser.parse(mFile, new XmlHandler());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return mName;
+        return mFullName;
     }
 
     private class XmlHandler extends DefaultHandler {
@@ -81,8 +82,8 @@ public class LayoutReader {
                     mRootView.translate(stringBuffer);
                     stringBuffer.append("return ").append(mRootView.getObjName());
                     LayoutWriter writer = new LayoutWriter(stringBuffer.toString(), mFiler, mName, mPackageName
-                            , mLayoutName, mRootView.getImports());
-                    writer.write();
+                            , Util.getLayoutCategory(mFile), mLayoutName, mRootView.getImports());
+                    mFullName = writer.write();
                 }
             }
         }
@@ -99,6 +100,7 @@ public class LayoutReader {
             }
             View view = new View(mPackageName, name, attributes);
             if (mStack.size() == 0) {
+                view.setDirName(Util.getDirName(mFile));
                 view.setIsDataBinding(isDataBinding);
             }
             view.setLayoutName(mLayoutName);
@@ -110,7 +112,7 @@ public class LayoutReader {
     private String getJavaName(int groupId, String name) {
         String retName = groupId + "_" + name;
         String[] ss = retName.split("_");
-        StringBuilder stringBuilder = new StringBuilder("X2C_");
+        StringBuilder stringBuilder = new StringBuilder("X2C");
         for (int i = 0; i < ss.length; i++) {
             stringBuilder.append(ss[i].substring(0, 1).toUpperCase())
                     .append(ss[i].substring(1));

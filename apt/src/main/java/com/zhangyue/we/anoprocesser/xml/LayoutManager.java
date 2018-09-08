@@ -1,15 +1,24 @@
 package com.zhangyue.we.anoprocesser.xml;
 
+import com.zhangyue.we.anoprocesser.FileFilter;
 import com.zhangyue.we.anoprocesser.Log;
+import com.zhangyue.we.anoprocesser.Util;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.processing.Filer;
 import javax.tools.JavaFileObject;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * @author：chengwei 2018/8/10
@@ -19,7 +28,6 @@ public class LayoutManager {
 
     private static LayoutManager sInstance;
     private File mRootFile;
-    private File mLayoutFile;
     private String mPackageName;
     private int mGroupId;
     private Filer mFiler;
@@ -49,10 +57,16 @@ public class LayoutManager {
      */
     private HashMap<String, Attr> mAttrs;
 
+    /**
+     * key is layoutName,value is layout list,like layout-land/main.xml,layout-v23/main.xml
+     */
+    private HashMap<String, ArrayList<File>> mLayouts;
+
     private LayoutManager() {
         mMap = new HashMap<>();
         mRJavaId = new HashMap<>();
         mTranslateMap = new HashMap<>();
+        mLayouts = new HashMap<>();
     }
 
     public static LayoutManager instance() {
@@ -67,37 +81,85 @@ public class LayoutManager {
     }
 
     public void setFiler(Filer filer) {
+        this.mLayouts.clear();
         this.mFiler = filer;
-        getLayoutPath();
-        mPackageName = getPackageName();
-        mRJava = getR();
-        mAttrs = new Attr2FuncReader(new File(mRootFile, "X2C_CONFIG.xml")).parse();
+        this.mRootFile = getRootFile();
+        this.findPackageName();
+        this.mRJava = getR();
+        this.mAttrs = new Attr2FuncReader(new File(mRootFile, "X2C_CONFIG.xml")).parse();
     }
 
     public void setGroupId(int groupId) {
         this.mGroupId = groupId;
     }
 
-    public String getLayoutName(int id) {
-        return mRJavaId.get(id);
-    }
 
     public Integer getLayoutId(String layoutName) {
         return mRJava.get(layoutName);
     }
 
     public String translate(String layoutName) {
-        String fileName;
+        if (mLayouts.size() == 0) {
+            mLayouts = scanLayouts(mRootFile);
+            Log.w(mLayouts.toString());
+        }
+        String fileName = null;
         Integer layoutId = getLayoutId(layoutName);
         if (mMap.containsKey(layoutId)) {
             fileName = mMap.get(layoutId);
         } else {
-            LayoutReader reader = new LayoutReader(mLayoutFile, layoutName, mFiler, mPackageName, mGroupId);
-            fileName = reader.parse();
-            mMap.put(layoutId, fileName);
+            ArrayList<File> layouts = mLayouts.get(layoutName);
+            if (layouts != null) {
+                Util.sortLayout(layouts);
+                ArrayList<String> javaNames = new ArrayList<>();
+                for (File file : layouts) {
+                    LayoutReader reader = new LayoutReader(file, layoutName, mFiler, mPackageName, mGroupId);
+                    fileName = reader.parse();
+                    javaNames.add(fileName);
+                    mMap.put(layoutId, fileName);
+                }
+
+                MapWriter mapWriter = new MapWriter(mGroupId, layouts, javaNames, mFiler);
+                mapWriter.write();
+            }
         }
-        mTranslateMap.put(fileName + ".java", layoutName + ".xml");
+        if (fileName != null) {
+            mTranslateMap.put(fileName + ".java", layoutName + ".xml");
+        }
         return fileName;
+    }
+
+    private HashMap<String, ArrayList<File>> scanLayouts(File root) {
+        return new FileFilter(root)
+                .include("layout")
+                .include("layout-land")
+                .include("layout-v28")
+                .include("layout-v27")
+                .include("layout-v26")
+                .include("layout-v25")
+                .include("layout-v24")
+                .include("layout-v23")
+                .include("layout-v22")
+                .include("layout-v21")
+                .include("layout-v20")
+                .include("layout-v19")
+                .include("layout-v18")
+                .include("layout-v17")
+                .include("layout-v16")
+                .include("layout-v15")
+                .include("layout-v14")
+                .exclude("build")
+                .exclude("java")
+                .exclude("libs")
+                .exclude("mipmap")
+                .exclude("values")
+                .exclude("drawable")
+                .exclude("anim")
+                .exclude("color")
+                .exclude("menu")
+                .exclude("raw")
+                .exclude("xml")
+                .filter();
     }
 
     public Style getStyle(String name) {
@@ -105,21 +167,13 @@ public class LayoutManager {
             return null;
         }
         if (mStyles == null) {
-            mStyles = new StyleReader(mLayoutFile.getParentFile()).parse();
+            mStyles = new HashMap();
+            new StyleReader(mRootFile.getParentFile(), mStyles).parse();
         }
         return mStyles.get(name);
     }
 
-    public void generateMap() {
-        printTranslate();
-
-        MapWriter mapWriter = new MapWriter(mGroupId, mMap, mFiler);
-        mapWriter.write();
-        mMap.clear();
-        mTranslateMap.clear();
-    }
-
-    private void printTranslate() {
+    public void printTranslate() {
         if (mTranslateMap.size() == 0) {
             return;
         }
@@ -145,10 +199,11 @@ public class LayoutManager {
             }
             Log.w(String.format("%s->\t%s", stringBuilder.toString(), javaName));
         }
+        mTranslateMap.clear();
     }
 
 
-    private void getLayoutPath() {
+    private File getRootFile() {
         try {
             JavaFileObject fileObject = mFiler.createSourceFile("bb");
             String path = fileObject.toUri().toString();
@@ -160,35 +215,55 @@ public class LayoutManager {
             while (!file.getName().equals("build")) {
                 file = file.getParentFile();
             }
-            mRootFile = file.getParentFile();
-            String sep = File.separator;
-            mLayoutFile = new File(mRootFile.getAbsolutePath() + sep + "src" + sep + "main" + sep + "res" + sep + "layout");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String getPackageName() {
-        File buildGradle = new File(mRootFile, "build.gradle");
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(buildGradle));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.contains("applicationId")) {
-                    return line.substring(line.indexOf("\"") + 1, line.lastIndexOf("\""));
-                }
-            }
+            return file.getParentFile();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
+
+    private void findPackageName() {
+        String sep = File.separator;
+        File androidMainfest = new File(mRootFile + sep + "build" + sep + "intermediates" + sep + "manifests"
+                + sep + "full" + sep + "debug" + sep + "AndroidManifest.xml");
+        if (!androidMainfest.exists()) {
+            androidMainfest = new File(mRootFile + sep + "src" + sep + "main" + sep + "AndroidManifest.xml");
+        }
+        SAXParser parser = null;
+        try {
+            parser = SAXParserFactory.newInstance().newSAXParser();
+            parser.parse(androidMainfest, new DefaultHandler() {
+                @Override
+                public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+                    super.startElement(uri, localName, qName, attributes);
+                    if (qName.equals("manifest")) {
+                        mPackageName = attributes.getValue("package");
+                    }
+                }
+            });
+            parser.reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (parser != null) {
+                    parser.reset();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+
+        Log.w("mPkgName " + mPackageName);
+    }
+
     private HashMap<String, Integer> getR() {
         HashMap<String, Integer> map = new HashMap<>();
         File rFile = getRFile();
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(rFile));
+            reader = new BufferedReader(new FileReader(rFile));
             String line;
             boolean layoutStarted = false;
             while ((line = reader.readLine()) != null) {
@@ -198,16 +273,19 @@ public class LayoutManager {
                     if (line.contains("}")) {
                         break;
                     } else {
-                        line = line.substring(line.lastIndexOf(" ") + 1, line.indexOf(";"));
-                        String ss[] = line.split("=");
-                        int id = Integer.decode(ss[1]);
-                        map.put(ss[0], id);
-                        mRJavaId.put(id, ss[0]);
+                        line = line.substring(line.lastIndexOf("int") + 3, line.indexOf(";"))
+                                .replaceAll(" ", "").trim();
+                        String[] lineSplit = line.split("=");
+                        int id = Integer.decode(lineSplit[1]);
+                        map.put(lineSplit[0], id);
+                        mRJavaId.put(id, lineSplit[0]);
                     }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            Util.close(reader);
         }
         return map;
     }
@@ -229,6 +307,31 @@ public class LayoutManager {
 
     public HashMap<String, Attr> getAttrs() {
         return mAttrs;
+    }
+
+    private boolean isLibrary() {
+        File file = new File(mRootFile, "build.gradle");
+        BufferedReader fileReader = null;
+        boolean isLibrary = true;
+        try {
+            fileReader = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = fileReader.readLine()) != null) {
+                int indexOfApplication = line.indexOf("'com.android.application'");
+                if (indexOfApplication >= 0) {
+                    int indexOfNote = line.indexOf("//");
+                    if (indexOfNote == -1 || indexOfNote > indexOfApplication) {
+                        isLibrary = false;
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Util.close(fileReader);
+        }
+        return isLibrary;
     }
 
 }
