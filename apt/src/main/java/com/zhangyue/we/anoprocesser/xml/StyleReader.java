@@ -1,11 +1,13 @@
 package com.zhangyue.we.anoprocesser.xml;
 
+import com.zhangyue.we.anoprocesser.FileFilter;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
-import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.parsers.SAXParser;
@@ -20,33 +22,48 @@ public class StyleReader {
     private File mRootFile;
     private SAXParser mParser;
 
-    public StyleReader(File file) {
+    public StyleReader(File file, HashMap<String, Style> styles) {
         this.mRootFile = file;
-        this.mStyles = new HashMap<>();
+        this.mStyles = styles;
         try {
             this.mParser = SAXParserFactory.newInstance().newSAXParser();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
-    public HashMap<String, Style> parse() {
-        File[] styleFiles = new File(mRootFile, "values").listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.getName().contains("style");
-            }
-        });
-
-        for (File file : styleFiles) {
-            try {
-                mParser.parse(file, new StyleHandler());
-            } catch (Exception e) {
-                e.printStackTrace();
+    public void parse() {
+        HashMap<String, ArrayList<File>> styles = scanStyles(mRootFile);
+        for (ArrayList<File> list : styles.values()) {
+            for (File file : list) {
+                try {
+                    mParser.parse(file, new StyleHandler());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        return mStyles;
     }
+
+    private HashMap<String, ArrayList<File>> scanStyles(File root) {
+        return new FileFilter(root)
+                .include("values")
+                .fileStart("style")
+                .exclude("layout")
+                .exclude("build")
+                .exclude("java")
+                .exclude("libs")
+                .exclude("mipmap")
+                .exclude("drawable")
+                .exclude("anim")
+                .exclude("color")
+                .exclude("menu")
+                .exclude("raw")
+                .exclude("xml")
+                .filter();
+    }
+
 
     private class StyleHandler extends DefaultHandler {
 

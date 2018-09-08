@@ -20,24 +20,28 @@ public class LayoutWriter {
     private String mName;
     private String mMethodSpec;
     private String mPkgName;
+    private String mLayoutCategory;
     private String mLayoutName;
     private TreeSet<String> mImports;
 
-    public LayoutWriter(String methodSpec, Filer filer, String javaName, String pkgName, String layoutName
+    public LayoutWriter(String methodSpec, Filer filer, String javaName
+            , String pkgName
+            , String layoutSort
+            , String layoutName
             , TreeSet<String> imports) {
         this.mMethodSpec = methodSpec;
         this.mFiler = filer;
         this.mName = javaName;
         this.mPkgName = pkgName;
+        this.mLayoutCategory = layoutSort;
         this.mLayoutName = layoutName;
         this.mImports = imports;
     }
 
-    public void write() {
+    public String write() {
 
         MethodSpec methodSpec = MethodSpec.methodBuilder("createView")
                 .addParameter(ClassName.get("android.content", "Context"), "ctx")
-                .addParameter(int.class, "layoutId")
                 .addStatement(mMethodSpec)
                 .returns(ClassName.get("android.view", "View"))
                 .addAnnotation(Override.class)
@@ -52,7 +56,11 @@ public class LayoutWriter {
                         "\nautho chengwei \nemail chengwei@zhangyue.com\n", mPkgName, mLayoutName))
                 .build();
 
-        JavaFile javaFile = JavaFile.builder("com.zhangyue.we.x2c", typeSpec)
+        String pkgName = "com.zhangyue.we.x2c.layouts";
+        if (mLayoutCategory != null && mLayoutCategory.length() > 0) {
+            pkgName += ("." + mLayoutCategory);
+        }
+        JavaFile javaFile = JavaFile.builder(pkgName, typeSpec)
                 .addImports(mImports)
                 .build();
         try {
@@ -60,5 +68,7 @@ public class LayoutWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return pkgName + "." + mName;
     }
 }

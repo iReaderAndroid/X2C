@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'x2c-plugin'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.zhangyue.we.x2c.demo"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -22,22 +23,19 @@ android {
     dataBinding {
         enabled true
     }
+
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
-
     implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha2'
-
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
-
+    implementation project(':app-module')
     annotationProcessor project(':apt')
-    compile project(':lib')
+    implementation project(':lib')
     if (android.dataBinding.enabled) {
-        compile project(':sup-databinding')
+        implementation project(':sup-databinding')
     }
-
 }

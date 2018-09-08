@@ -1,8 +1,10 @@
-package com.zhangyue.we.x2c.demo;
+package com.zhangyue.we.x2c.demo.act;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ViewStub;
+
+import com.zhangyue.we.x2c.demo.R;
 
 /**
  * @author：chengwei 2018/8/24

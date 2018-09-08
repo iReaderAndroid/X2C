@@ -37,7 +37,7 @@ implementation project(':lib')
 
 #### 2.添加注解
 ```java
-@Xml(layouts = {R.layout.activity_main})
+@Xml(layouts = "activity_main")
 ```
 
 
@@ -125,26 +125,28 @@ public class X2C_2131296281_Activity_Main implements IViewCreator {
 ```
 #### 生成的映射文件
 ```java
+
 /**
- * WARN!!! dont edit this file
+ * WARN!!! don't edit this file
  *
- * autho chengwei
+ * author chengwei
  * email chengwei@zhangyue.com
  */
-public class X2C_2131296283 implements IViewCreator {
+public class X2C127_activity implements IViewCreator {
   @Override
-  public View createView(Context context, int layoutId) {
-    	View view;
-        switch(layoutId){
-        	case 2131296283:
-        		view = new X2C_2131296283_Activity_Main().createView(context,2131296283);
-        		break;
-        	case 2131296284:
-        		view = new X2C_2131296283_Head().createView(context,2131296284);
-        		break;
-        	default:
-        		view = null;
-        		break;
+  public View createView(Context context) {
+        View view = null ;
+        int sdk = Build.VERSION.SDK_INT;
+        int orientation = context.getResources().getConfiguration().orientation;
+        boolean isLandscape = orientation == Configuration.ORIENTATION_LANDSCAPE;
+        if (isLandscape) {
+        	view = new com.zhangyue.we.x2c.layouts.land.X2C127_Activity().createView(context);
+        } else if (sdk >= 27) {
+        	view = new com.zhangyue.we.x2c.layouts.v27.X2C127_Activity().createView(context);
+        } else if (sdk >= 21) {
+        	view = new com.zhangyue.we.x2c.layouts.v21.X2C127_Activity().createView(context);
+        } else {
+        	view = new com.zhangyue.we.x2c.layouts.X2C127_Activity().createView(context);
         }
         return view;
   }
