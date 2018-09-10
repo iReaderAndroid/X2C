@@ -23,5 +23,12 @@
             style="@style/btn"
             android:text="@{bean.x2c}" />
 
+        <Button
+            android:id="@+id/xml"
+            style="@style/btn"
+            android:layout_marginTop="10dp"
+            android:text="@{bean.xml}" />
+
+
     </LinearLayout>
 </layout>

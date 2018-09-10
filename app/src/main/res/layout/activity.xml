@@ -1,39 +1,33 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <data>
-
-        <variable
-            name="bean"
-            type="com.zhangyue.we.x2c.demo.Bean" />
-
-    </data>
-
-    <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
 
 
-        <Button
-            android:id="@+id/x2c"
-            style="@style/btn"
-            android:text="@{bean.x2c}" />
+    <Button
+        android:id="@+id/x2c"
+        style="@style/btn"
+        android:text="X2C" />
 
-        <Button
-            android:id="@+id/xml"
-            style="@style/btn"
-            android:layout_marginTop="10dp"
-            android:text="@{bean.xml}" />
+    <Button
+        android:id="@+id/xml"
+        style="@style/btn"
+        android:layout_marginTop="10dp"
+        android:text="XML" />
 
-        <Button
-            android:id="@+id/sub"
-            style="@style/btn"
-            android:layout_marginTop="10dp"
-            android:text="@{bean.sub}" />
+    <Button
+        android:id="@+id/sub"
+        style="@style/btn"
+        android:layout_marginTop="10dp"
+        android:text="subModule" />
 
-    </LinearLayout>
-</layout>
+    <Button
+        android:id="@+id/binding"
+        style="@style/btn"
+        android:layout_marginTop="10dp"
+        android:text="DataBinding" />
+</LinearLayout>

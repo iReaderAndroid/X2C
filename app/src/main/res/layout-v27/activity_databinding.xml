@@ -29,11 +29,6 @@
             android:layout_marginTop="10dp"
             android:text="@{bean.xml}" />
 
-        <Button
-            android:id="@+id/sub"
-            style="@style/btn"
-            android:layout_marginTop="10dp"
-            android:text="@{bean.sub}" />
 
     </LinearLayout>
 </layout>

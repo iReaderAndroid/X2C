@@ -2,18 +2,11 @@ package com.zhangyue.we.x2c.demo.act;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.databinding.DataBindingX2C;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.zhangyue.we.x2c.X2C;
 import com.zhangyue.we.x2c.ano.Xml;
-import com.zhangyue.we.x2c.demo.Bean;
 import com.zhangyue.we.x2c.demo.R;
-import com.zhangyue.x2c.demo.ActivitySubModule;
-import com.zhangyue.we.x2c.demo.databinding.ActivityBinding;
 import com.zhangyue.x2c.demo.ActivitySubModule;
 
 import butterknife.ButterKnife;
@@ -26,8 +19,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityBinding binding = DataBindingX2C.setContentView(this, R.layout.activity);
-        binding.setBean(new Bean());
+        X2C.setContentView(this, R.layout.activity);
         ButterKnife.bind(this);
     }
 
@@ -45,5 +37,10 @@ public class MainActivity extends Activity {
     @OnClick(R.id.sub)
     void toSub() {
         startActivity(new Intent(this, ActivitySubModule.class));
+    }
+
+    @OnClick(R.id.binding)
+    void toDataBinding() {
+        startActivity(new Intent(this,ActivityDataBinding.class));
     }
 }

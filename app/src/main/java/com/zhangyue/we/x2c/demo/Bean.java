@@ -8,5 +8,4 @@ public class Bean {
 
     public String x2c = "X2C";
     public String xml = "XML";
-    public String sub = "SUB";
 }
