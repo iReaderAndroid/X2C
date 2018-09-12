@@ -1,0 +1,15 @@
+<resources>
+
+
+
+    <style name="btn">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">#3F51B5</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+
+</resources>

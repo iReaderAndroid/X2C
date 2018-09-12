@@ -19,7 +19,6 @@
 
         <activity android:name=".act.ActivityXML" />
         <activity android:name=".act.ActivityX2C" />
-        <activity android:name=".act.ActivityDataBinding"/>
     </application>
 
 </manifest>

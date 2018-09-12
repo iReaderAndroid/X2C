@@ -9,7 +9,7 @@ import com.zhangyue.we.x2c.ano.Xml;
 import com.zhangyue.we.x2c.demo.R;
 
 /**
- * @author：chengwei 2018/8/24
+ * @author:chengwei 2018/8/24
  * @description
  */
 @Xml(layouts = "activity_main")

@@ -39,8 +39,5 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, ActivitySubModule.class));
     }
 
-    @OnClick(R.id.binding)
-    void toDataBinding() {
-        startActivity(new Intent(this,ActivityDataBinding.class));
-    }
+
 }

@@ -1,4 +1,4 @@
-include ':app', ':sup-databinding', ':plugin', ':app-module'
-include ':apt'
-include ':lib'
+include ':app', ':x2c-binding', ':plugin', ':app-module', ':app-databinding'
+include ':x2c-apt'
+include ':x2c-lib'
 include ':plugin'

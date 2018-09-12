@@ -19,9 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled true
-    }
 
 }
 
@@ -31,10 +28,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha2'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     implementation project(':app-module')
-    annotationProcessor project(':apt')
-    implementation project(':lib')
-    if (android.dataBinding.enabled) {
-        implementation project(':sup-databinding')
-    }
+    annotationProcessor project(':x2c-apt')
+    implementation project(':x2c-lib')
 }

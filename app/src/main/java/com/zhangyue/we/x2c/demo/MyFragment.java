@@ -11,7 +11,7 @@ import com.zhangyue.we.x2c.X2C;
 import com.zhangyue.we.x2c.ano.Xml;
 
 /**
- * @author：chengwei 2018/8/28
+ * @author:chengwei 2018/8/28
  * @description
  */
 @Xml(layouts = "fragmetn_layout")
