@@ -42,7 +42,7 @@ public class XmlProcessor extends AbstractProcessor {
             Xml xml = element.getAnnotation(Xml.class);
             String[] names = xml.layouts();
             for (String name : names) {
-                layouts.add(name);
+                layouts.add(name.substring(name.lastIndexOf(".") + 1));
             }
         }
 
