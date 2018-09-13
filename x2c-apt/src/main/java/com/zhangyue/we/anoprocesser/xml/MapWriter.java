@@ -1,9 +1,9 @@
 package com.zhangyue.we.anoprocesser.xml;
 
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.WeJavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.x2c.ClassName;
+import com.squareup.javapoet.x2c.MethodSpec;
+import com.squareup.javapoet.x2c.TypeSpec;
+import com.squareup.javapoet.x2c.JavaFile;
 import com.zhangyue.we.anoprocesser.Util;
 
 import java.io.File;
@@ -81,7 +81,7 @@ public class MapWriter {
                         "\nauthor chengwei \nemail chengwei@zhangyue.com\n"))
                 .build();
 
-        WeJavaFile javaFile = WeJavaFile.builder("com.zhangyue.we.x2c", typeSpec)
+        JavaFile javaFile = JavaFile.builder("com.zhangyue.we.x2c", typeSpec)
                 .addImports(imports)
                 .build();
         try {

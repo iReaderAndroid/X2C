@@ -1,9 +1,9 @@
 package com.zhangyue.we.anoprocesser.xml;
 
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.WeJavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.x2c.ClassName;
+import com.squareup.javapoet.x2c.MethodSpec;
+import com.squareup.javapoet.x2c.TypeSpec;
+import com.squareup.javapoet.x2c.JavaFile;
 
 import java.io.IOException;
 import java.util.TreeSet;
@@ -59,7 +59,7 @@ public class LayoutWriter {
         if (mLayoutCategory != null && mLayoutCategory.length() > 0) {
             pkgName += ("." + mLayoutCategory);
         }
-        WeJavaFile javaFile = WeJavaFile.builder(pkgName, typeSpec)
+        JavaFile javaFile = JavaFile.builder(pkgName, typeSpec)
                 .addImports(mImports)
                 .build();
         try {
