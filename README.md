@@ -31,8 +31,8 @@
 # 集成使用
 #### 1.导入依赖
 ```java
-annotationProcessor project(':apt')
-implementation project(':lib')
+annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.5'
+implementation 'com.zhangyue.we:x2c-lib:1.0.5'
 ```
 
 #### 2.添加注解

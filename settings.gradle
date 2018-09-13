@@ -1,4 +1,6 @@
-include ':app', ':x2c-binding', ':plugin', ':app-module', ':app-databinding'
+include ':app'
+include ':app-databinding'
+include ':app-module'
 include ':x2c-apt'
 include ':x2c-lib'
-include ':plugin'
+include ':x2c-binding'
