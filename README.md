@@ -30,12 +30,14 @@
 
 # 集成使用
 #### 1.导入依赖
+在module的build.gradle文件添加依赖
 ```java
 annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.5'
 implementation 'com.zhangyue.we:x2c-lib:1.0.5'
 ```
 
 #### 2.添加注解
+在使用布局的任意java类或方法添加注解即可
 ```java
 @Xml(layouts = "activity_main")
 ```
@@ -53,11 +55,12 @@ implementation 'com.zhangyue.we:x2c-lib:1.0.5'
 ```
 
 #### 4.通过X2C加载布局
+在原先使用setContentView或inflate的地方替换，如下：
 ```java
-X2C.setContentView(this, R.layout.activity_main);
+this.setContentView(R.layout.activity_main); --> X2C.setContentView(this, R.layout.activity_main);
 ```
 ```java
-X2C.inflate(this,R.layout.activity_main,null);
+LayoutInflater.from(this).inflate(R.layout.activity_main,null); --> X2C.inflate(this,R.layout.activity_main,null);
 ```
 
 
