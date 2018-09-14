@@ -1,51 +1,52 @@
-# Background
-[中文](README_CN.md)
+# 背景
+[English](README.md)
 
-Generally, when writing a page, everyone writes the layout through xml, and loads the xml layout into memory through set contentView or LayoutInflater.from(context).inflate method.
-#### advantage
-   *  Good maintainability
-   *  Support instant preview
-   *  Clear code structure
+&ensp;一般大家在写页面时都是通过xml写布局，通过setContentView、或LayoutInflater.from(context).inflate方法将xml布局加载到内存中。
 
-#### Disadvantage
-   *  Reading xml is time consuming
-   *  Recursive parsing xml is time consuming
-   *  The time it takes to generate an object is more than three times that of new.
+#### 优点
+   *  可维护性好
+   *  支持即时预览
+   *  代码结构清晰
 
-Our team has also explored many solutions on this issue. Once it reached the other extreme, completely abandoning xml, all controls are new through java, even directly in the canvas, so although the performance is indeed improved, but the code is gone. A little bit of readability and maintainability.
-We later reflected on the code to see the machine, or to show it? ? Maybe X2C has given us an answer.
+#### 缺点
+   *  读取xml很耗时
+   *  递归解析xml较耗时
+   *  反射生成对象的耗时是new的3倍以上
+
+&ensp;&ensp;&ensp;&ensp;我们团队在这个问题上也探索过很多解决方案，一度走到了另一个极端，完全废弃xml，所有控件通过java来new，甚至直接在canvas里绘制，这样虽然性能确实提升了，但是代码已经没有了一丁点可读性，可维护性。
+&ensp;&ensp;&ensp;&ensp;我们后来反思代码到底是给机器看的，还是给人看的？？也许X2C已经给了我们一个答案
 
 # X2C
 
-In order to preserve the advantages of xml and solve the performance problems it brings, we developed the X2C solution. That is, during the compilation and generation of the APK, the translation of the layout that needs to be translated generates the corresponding java file, so that the developer writes the layout or writes the original xml, but for the program, the runtime loads the corresponding java file.
-We use APT (Annotation Processor Tool) + JavaPoet technology to complete the operation of the whole process during the compilation [Annotation] -> [Resolve] -> [Translate xml] -> [Generate java].
+&ensp;&ensp;&ensp;&ensp;为了即保留xml的优点，又解决它带来的性能问题，我们开发了X2C方案。即在编译生成APK期间，将需要翻译的layout翻译生成对应的java文件，这样对于开发人员来说写布局还是写原来的xml，但对于程序来说，运行时加载的是对应的java文件。
+&ensp;&ensp;&ensp;&ensp;我们采用APT（Annotation Processor Tool）+ JavaPoet技术来完成编译期间【注解】->【解注解】->【翻译xml】->【生成java】整个流程的操作。
 
-# Performance comparison
-After the development integration, we did a simple test, the performance comparison is as follows
+# 性能对比
+在开发集成完之后我们做了简单的测试，性能对比如下
 
-| Loading method|frequency|Average load time|
+| 加载方式|次数|平均加载时间|
 | ------ | ------ |  ------ |
 |XML|100|30|
 |X2C|100|11|
 
-# Integrated use
-#### 1.Add dependency
-Add dependencies in the build.gradle file of the module
+# 集成使用
+#### 1.导入依赖
+在module的build.gradle文件添加依赖
 ```java
 annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.6'
 implementation 'com.zhangyue.we:x2c-lib:1.0.6'
 ```
 
-#### 2.Add annotation
-Add annotations to any java class or method that uses the layout.
+#### 2.添加注解
+在使用布局的任意java类或方法添加注解即可
 ```java
 @Xml(layouts = "activity_main")
 ```
 
 
-#### 3.Configure custom properties (no or no)
+#### 3.配置自定义属性(没有可不配)
 
-Create an X2C_CONFIG.xml file under the module, which defines the mapping between attributes and methods. If the receiver is a view, write the view. Otherwise fill in params.
+在module下建立X2C_CONFIG.xml文件，里面配置定义属性和方法的映射关系,如果接收者是view，则写view.否则填params.
 
 ```mxl
 <x2c-config>
@@ -54,8 +55,8 @@ Create an X2C_CONFIG.xml file under the module, which defines the mapping betwee
 </x2c-config>
 ```
 
-#### 4.Load layout through X2C
-Replace where you originally used set content view or inflate, as follows:
+#### 4.通过X2C加载布局
+在原先使用setContentView或inflate的地方替换，如下：
 ```java
 this.setContentView(R.layout.activity_main); --> X2C.setContentView(this, R.layout.activity_main);
 ```
@@ -64,9 +65,9 @@ LayoutInflater.from(this).inflate(R.layout.activity_main,null); --> X2C.inflate(
 ```
 
 
-# Process file
+# 过程文件
 
-#### Original xml
+#### 原始的xml
 
   ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -91,7 +92,7 @@ LayoutInflater.from(this).inflate(R.layout.activity_main,null); --> X2C.inflate(
 </RelativeLayout>
 ```
 
-#### Generated java file
+#### 生成的java文件
 ```java
 
 /**
@@ -126,7 +127,7 @@ public class X2C_2131296281_Activity_Main implements IViewCreator {
   }
 }
 ```
-#### Generated map file
+#### 生成的映射文件
 ```java
 
 /**
@@ -156,41 +157,41 @@ public class X2C127_activity implements IViewCreator {
 }
 
 ```
-# not support
-*  The merge tag cannot determine the parent of the xml during compilation, so it cannot be supported.
-*  System style, only the style list of the application can be found during compilation, and the system style cannot be queried, so only the in-app style is supported.
+# 不支持
+*  merge标签 ,在编译期间无法确定xml的parent，所以无法支持
+*  系统style,在编译期间只能查到应用的style列表，无法查询系统style，所以只支持应用内style
 
-# support
-* Compatible with ButterKnifer
-* Compatible with DataBinding
-* Various system controls, custom controls
-* include tag
-* viewStub tag
-* fragment label
-* Application style
-* Custom attribute
-* System attribute
+# 支持
+* 兼容ButterKnifer
+* 兼容DataBinding
+* 各种系统控件、自定义控件
+* include标签
+* viewStub标签
+* fragment标签(感谢[Dreamskya](https://github.com/Dreamskya))提出宝贵意见
+* 应用style
+* 自定义属性(感谢[Anzhi-Meiying](https://github.com/Anzhi-Meiying)提出的宝贵意见)
+* 系统属性
 
-| Attribute name|Attribute name|
+| 属性名称|属性名称|
 | ------ |------- |
 |android:textSize| app:layout_constraintRight_toLeftOf|
 |android:textColor| app:layout_constraintBottom_toTopOf|
 |android:text| app:layout_constraintTop_toTopOf|
 |android:background| app:layout_constrainedHeight|
-|[view all](supportAll.md)|
+|[查看全部](supportAll.md)|
 
 
 
-## There are usage problems and other technical issues, welcome to exchange discussion
+## 有使用问题和其他技术问题，欢迎加群交流讨论
 
-> QQ群：`870956525`，Add please specify from`X2C`
+> QQ群：`870956525`，添加请注明来自`X2C`
 >
 > <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=4464e9ee4fc8b05ee3c4eeb4f4be97469c1cfe46cded6b00f4a887ebebb60916"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="掌阅X2C交流群" title="掌阅X2C交流群"></a>
 >
-> Welcome everyone to use, the project will continue to maintain
+> 欢迎各位使用，该项目会持续维护。
 >
 >
-> Another: welcome to join[IReader](http://www.zhangyue.com/jobs) family, study new Android technologies together. Please send your resume`huangjian@zhangyue.com`,Indicate the direction of employment。
+> 另：欢迎加入[掌阅](http://www.zhangyue.com/jobs)大家庭，一起研究Android新技术。简历请发送`huangjian@zhangyue.com`,注明应聘方向。
 >
 # LICENSE
 
