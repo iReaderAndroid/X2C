@@ -161,9 +161,10 @@ public class X2C127_activity implements IViewCreator {
 *  System style, only the style list of the application can be found during compilation, and the system style cannot be queried, so only the in-app style is supported.
 
 # support
-* Compatible with ButterKnifer
-* Compatible with DataBinding
-* Various system controls, custom controls
+* ButterKnifer
+* DataBinding
+* android widget
+* customView
 * include tag
 * viewStub tag
 * fragment label
