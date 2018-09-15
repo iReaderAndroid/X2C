@@ -38,8 +38,8 @@ dependencies {
 //        implementation project(':x2c-binding')
 //    }
 
-    annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.5'
-    implementation 'com.zhangyue.we:x2c-lib:1.0.5'
+    annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.8'
+    implementation 'com.zhangyue.we:x2c-lib:1.0.6'
     if (android.dataBinding.enabled) {
         implementation  'com.zhangyue.we:x2c-binding:1.0.5'
     }

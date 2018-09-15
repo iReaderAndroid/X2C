@@ -33,7 +33,7 @@
 #### 1.导入依赖
 在module的build.gradle文件添加依赖
 ```java
-annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.6'
+annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.8'
 implementation 'com.zhangyue.we:x2c-lib:1.0.6'
 ```
 

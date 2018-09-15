@@ -77,10 +77,10 @@ public class LayoutReader {
                 View view = mStack.pop();
                 if (mStack.size() == 0) {
                     mRootView = view;
-                    StringBuffer stringBuffer = new StringBuffer();
-                    mRootView.translate(stringBuffer);
-                    stringBuffer.append("return ").append(mRootView.getObjName());
-                    LayoutWriter writer = new LayoutWriter(stringBuffer.toString(), mFiler, mName, mPackageName
+                    StringBuilder StringBuilder = new StringBuilder();
+                    mRootView.translate(StringBuilder);
+                    StringBuilder.append("return ").append(mRootView.getObjName());
+                    LayoutWriter writer = new LayoutWriter(StringBuilder.toString(), mFiler, mName, mPackageName
                             , Util.getLayoutCategory(mFile), mLayoutName, mRootView.getImports());
                     mFullName = writer.write();
                 }
@@ -93,7 +93,7 @@ public class LayoutReader {
         }
 
         private View createView(String name, Attributes attributes) {
-            if (name.equals("layout") || name.equals("data") || name.equals("variable")) {
+            if (name.equals("layout") || name.equals("data") || name.equals("variable")|| name.equals("import")) {
                 isDataBinding = true;
                 return null;
             }

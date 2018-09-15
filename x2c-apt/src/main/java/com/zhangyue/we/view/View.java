@@ -82,11 +82,11 @@ public class View implements ITranslator {
         mChilds.add(child);
     }
 
-    public void translate(StringBuffer stringBuffer) {
-        stringBuffer.append(mViewStr);
+    public void translate(StringBuilder StringBuilder) {
+        StringBuilder.append(mViewStr);
         if (mChilds != null) {
             for (View view : mChilds) {
-                view.translate(stringBuffer);
+                view.translate(StringBuilder);
                 mImports.addAll(view.mImports);
             }
         }
@@ -141,17 +141,17 @@ public class View implements ITranslator {
 
 
     private String generateView(Attributes attributes) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder StringBuilder = new StringBuilder();
         if (mParent == null) {
-            stringBuffer.append("\tResources res = ctx.getResources();\n\n");
+            StringBuilder.append("\tResources res = ctx.getResources();\n\n");
         }
         String obj = getObjName();
         if (mTagName.equals("include")) {
             String javaName = LayoutManager.instance().translate(getIncludeLayout());
-            stringBuffer.append(String.format("%s %s =(View) new %s().createView(ctx,0);\n"
+            StringBuilder.append(String.format("%s %s =(View) new %s().createView(ctx,0);\n"
                     , mName, obj, javaName));
         } else {
-            stringBuffer.append(String.format("%s %s = new %s(ctx);\n", mName, obj, mName));
+            StringBuilder.append(String.format("%s %s = new %s(ctx);\n", mName, obj, mName));
         }
 
         mStyleAttributes = getStyleAttribute();
@@ -159,7 +159,7 @@ public class View implements ITranslator {
         String height = getHeight(getHeightStr());
         if (mParent != null) {
             String paramsName = mParent.getLayoutParams();
-            stringBuffer.append(String.format("%s %s = new %s(%s,%s);\n", paramsName, mLayoutParamsObj
+            StringBuilder.append(String.format("%s %s = new %s(%s,%s);\n", paramsName, mLayoutParamsObj
                     , paramsName, width, height));
         }
 
@@ -167,7 +167,7 @@ public class View implements ITranslator {
         if (mStyleAttributes != null) {
             for (String styleKey : mStyleAttributes.keySet()) {
                 for (ITranslator translator : translators) {
-                    if (translator.translate(stringBuffer, styleKey, mStyleAttributes.get(styleKey))) {
+                    if (translator.translate(StringBuilder, styleKey, mStyleAttributes.get(styleKey))) {
                         break;
                     }
                 }
@@ -185,25 +185,25 @@ public class View implements ITranslator {
                 break;
             }
             for (ITranslator translator : translators) {
-                if (translator.translate(stringBuffer, key, value)) {
+                if (translator.translate(StringBuilder, key, value)) {
                     break;
                 }
             }
         }
 
         for (ITranslator translator : translators) {
-            translator.onAttributeEnd(stringBuffer);
+            translator.onAttributeEnd(StringBuilder);
         }
 
         if (mParent != null) {
-            stringBuffer.append(String.format("%s.setLayoutParams(%s);\n", obj, mLayoutParamsObj));
-            stringBuffer.append(String.format("%s.addView(%s);\n", mParent.getObjName(), obj));
+            StringBuilder.append(String.format("%s.setLayoutParams(%s);\n", obj, mLayoutParamsObj));
+            StringBuilder.append(String.format("%s.addView(%s);\n", mParent.getObjName(), obj));
         }
 
         if (!mPadding.equals("0")) {
-            stringBuffer.append(getObjName()).append(String.format(".setPadding(%s,%s,%s,%s);\n", mPadding, mPadding, mPadding, mPadding));
+            StringBuilder.append(getObjName()).append(String.format(".setPadding(%s,%s,%s,%s);\n", mPadding, mPadding, mPadding, mPadding));
         } else if (!mPaddingLeft.equals("0") || !mPaddingTop.equals("0") || !mPaddingRight.equals("0") || !mPaddingBottom.equals("0")) {
-            stringBuffer.append(getObjName()).append(String.format(".setPadding(%s,%s,%s,%s);\n", mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom));
+            StringBuilder.append(getObjName()).append(String.format(".setPadding(%s,%s,%s,%s);\n", mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom));
         }
 
         if (mTagName.equals("fragment")) {
@@ -222,7 +222,7 @@ public class View implements ITranslator {
             mImports.add("java.lang.reflect.Method");
             mImports.add(mAndroidName);
 
-            stringBuffer.append(String.format("((Activity) ctx).getFragmentManager()" +
+            StringBuilder.append(String.format("((Activity) ctx).getFragmentManager()" +
                             "\n\t\t\t\t.beginTransaction()" +
                             "\n\t\t\t\t.replace(%s, new %s())" +
                             "\n\t\t\t\t.commit();\n"
@@ -231,38 +231,38 @@ public class View implements ITranslator {
 
             String fm = "fm" + getRootView().mIndex;
 
-            stringBuffer.append(String.format("FragmentManager %s = ((Activity)ctx).getFragmentManager();\n", fm));
-            stringBuffer.append(String.format("Class clz = %s.getClass();\n", fm));
-            stringBuffer.append("Method method;\n");
-            stringBuffer.append("while (clz != null) {\n");
-            stringBuffer.append("\ttry {\n");
-            stringBuffer.append("\t\tmethod = clz.getDeclaredMethod(\"execPendingActions\");\n ");
-            stringBuffer.append("\t\tif (method != null) {\n");
-            stringBuffer.append("\t\t\tmethod.setAccessible(true);\n");
-            stringBuffer.append(String.format("\t\t\tmethod.invoke(%s);\n", fm));
-            stringBuffer.append("\t\t\tbreak;\n");
-            stringBuffer.append("\t\t} else {\n");
-            stringBuffer.append("\t\t\tclz = clz.getSuperclass();\n");
-            stringBuffer.append("\t\t }\n");
-            stringBuffer.append("\t} catch (Exception e) {\n");
-            stringBuffer.append("\t\tclz = clz.getSuperclass();\n");
-            stringBuffer.append("\t}\n");
-            stringBuffer.append("}\n");
+            StringBuilder.append(String.format("FragmentManager %s = ((Activity)ctx).getFragmentManager();\n", fm));
+            StringBuilder.append(String.format("Class clz = %s.getClass();\n", fm));
+            StringBuilder.append("Method method;\n");
+            StringBuilder.append("while (clz != null) {\n");
+            StringBuilder.append("\ttry {\n");
+            StringBuilder.append("\t\tmethod = clz.getDeclaredMethod(\"execPendingActions\");\n ");
+            StringBuilder.append("\t\tif (method != null) {\n");
+            StringBuilder.append("\t\t\tmethod.setAccessible(true);\n");
+            StringBuilder.append(String.format("\t\t\tmethod.invoke(%s);\n", fm));
+            StringBuilder.append("\t\t\tbreak;\n");
+            StringBuilder.append("\t\t} else {\n");
+            StringBuilder.append("\t\t\tclz = clz.getSuperclass();\n");
+            StringBuilder.append("\t\t }\n");
+            StringBuilder.append("\t} catch (Exception e) {\n");
+            StringBuilder.append("\t\tclz = clz.getSuperclass();\n");
+            StringBuilder.append("\t}\n");
+            StringBuilder.append("}\n");
 
-            stringBuffer.append("\n");
+            StringBuilder.append("\n");
 
         }
 
         if (isDataBinding) {
             if (mParent == null) {
-                setTag(stringBuffer, mDirName + "/" + mLayoutName + "_" + mDataBindingIndex++);
+                setTag(StringBuilder, mDirName + "/" + mLayoutName + "_" + mDataBindingIndex++);
             } else {
-                setTag(stringBuffer, "binding_" + getRootView().mDataBindingIndex++);
+                setTag(StringBuilder, "binding_" + getRootView().mDataBindingIndex++);
             }
         }
 
-        stringBuffer.append("\n");
-        return stringBuffer.toString();
+        StringBuilder.append("\n");
+        return StringBuilder.toString();
     }
 
     private String getWidthStr() {
@@ -294,34 +294,34 @@ public class View implements ITranslator {
     }
 
     @Override
-    public boolean translate(StringBuffer stringBuffer, String key, String value) {
+    public boolean translate(StringBuilder StringBuilder, String key, String value) {
         switch (key) {
             case "android:textSize":
-                return setTextSize(stringBuffer, value);
+                return setTextSize(StringBuilder, value);
             case "android:textColor":
-                return setTextColor(stringBuffer, value);
+                return setTextColor(StringBuilder, value);
             case "android:text":
-                return setText(stringBuffer, value);
+                return setText(StringBuilder, value);
             case "android:background":
-                return setBackground(stringBuffer, value);
+                return setBackground(StringBuilder, value);
             case "android:textStyle":
-                return setTypeface(stringBuffer, value);
+                return setTypeface(StringBuilder, value);
             case "android:layout_margin":
-                return setMargin(stringBuffer, value);
+                return setMargin(StringBuilder, value);
             case "android:layout_marginLeft":
-                return setMarginLeft(stringBuffer, value);
+                return setMarginLeft(StringBuilder, value);
             case "android:layout_marginStart":
-                return setMarginLeft(stringBuffer, value);
+                return setMarginLeft(StringBuilder, value);
             case "android:tag":
-                return setTag(stringBuffer, value);
+                return setTag(StringBuilder, value);
             case "android:layout_marginTop":
-                return setMarginTop(stringBuffer, value);
+                return setMarginTop(StringBuilder, value);
             case "android:layout_marginRight":
-                return setMarginRight(stringBuffer, value);
+                return setMarginRight(StringBuilder, value);
             case "android:layout_marginEnd":
-                return setMarginRight(stringBuffer, value);
+                return setMarginRight(StringBuilder, value);
             case "android:layout_marginBottom":
-                return setMarginBottom(stringBuffer, value);
+                return setMarginBottom(StringBuilder, value);
             case "android:paddingStart":
                 mPaddingLeft = getWH(value);
                 return true;
@@ -344,39 +344,39 @@ public class View implements ITranslator {
                 mPadding = getWH(value);
                 return true;
             case "android:gravity":
-                return setGravity(stringBuffer, value);
+                return setGravity(StringBuilder, value);
             case "android:orientation":
-                return setOrientation(stringBuffer, value);
+                return setOrientation(StringBuilder, value);
             case "android:id":
-                return setId(stringBuffer, value);
+                return setId(StringBuilder, value);
             case "android:scaleType":
-                return setScaleType(stringBuffer, value);
+                return setScaleType(StringBuilder, value);
             case "android:src":
-                return setImageResource(stringBuffer, value);
+                return setImageResource(StringBuilder, value);
             case "android:visibility":
-                return setVisibility(stringBuffer, value);
+                return setVisibility(StringBuilder, value);
             case "android:clipToPadding":
-                return setClipToPadding(stringBuffer, value);
+                return setClipToPadding(StringBuilder, value);
             case "android:ellipsize":
-                return setEllipsize(stringBuffer, value);
+                return setEllipsize(StringBuilder, value);
             case "android:lineSpacingExtra":
-                return setLineSpacing(stringBuffer, value);
+                return setLineSpacing(StringBuilder, value);
             case "android:maxLines":
-                return setMaxLines(stringBuffer, value);
+                return setMaxLines(StringBuilder, value);
             case "android:maxHeight":
-                return setMaxHeight(stringBuffer, value);
+                return setMaxHeight(StringBuilder, value);
             case "android:maxWidth":
-                return setMaxWidth(stringBuffer, value);
+                return setMaxWidth(StringBuilder, value);
             case "android:minWidth":
-                return setMinWidth(stringBuffer, value);
+                return setMinWidth(StringBuilder, value);
             case "android:minHeight":
-                return setMinHeight(stringBuffer, value);
+                return setMinHeight(StringBuilder, value);
             case "android:layout_weight":
-                return setWeight(stringBuffer, value);
+                return setWeight(StringBuilder, value);
             case "android:layout_gravity":
-                return setLayoutGravity(stringBuffer, value);
+                return setLayoutGravity(StringBuilder, value);
             case "android:alpha":
-                return setAlpha(stringBuffer, value);
+                return setAlpha(StringBuilder, value);
             case "android:name":
                 mAndroidName = value;
                 return true;
@@ -385,9 +385,9 @@ public class View implements ITranslator {
         }
     }
 
-    private boolean setMargin(StringBuffer stringBuffer, String value) {
+    private boolean setMargin(StringBuilder StringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuffer.append(String.format("%s.setMargins(%s,%s,%s,%s);\n",
+            StringBuilder.append(String.format("%s.setMargins(%s,%s,%s,%s);\n",
                     mLayoutParamsObj,
                     getWH(value),
                     getWH(value),
@@ -397,141 +397,141 @@ public class View implements ITranslator {
         return true;
     }
 
-    private boolean setTypeface(StringBuffer stringBuffer, String value) {
+    private boolean setTypeface(StringBuilder StringBuilder, String value) {
         mImports.add("android.graphics.Typeface");
-        stringBuffer.append(String.format("%s.setTypeface(%s);\n", getObjName(), getTextStyle(value)));
+        StringBuilder.append(String.format("%s.setTypeface(%s);\n", getObjName(), getTextStyle(value)));
         return true;
     }
 
     @Override
-    public void onAttributeEnd(StringBuffer stringBuffer) {
+    public void onAttributeEnd(StringBuilder StringBuilder) {
 
     }
 
-    private boolean setAlpha(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setAlpha(%s);\n", getObjName(), getFloat(value)));
+    private boolean setAlpha(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setAlpha(%s);\n", getObjName(), getFloat(value)));
         return true;
     }
 
-    private boolean setLayoutGravity(StringBuffer stringBuffer, String value) {
+    private boolean setLayoutGravity(StringBuilder StringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuffer.append(String.format("%s.gravity= %s ;\n", mLayoutParamsObj, getGravity(value)));
+            StringBuilder.append(String.format("%s.gravity= %s ;\n", mLayoutParamsObj, getGravity(value)));
         }
         return true;
     }
 
-    private boolean setWeight(StringBuffer stringBuffer, String value) {
+    private boolean setWeight(StringBuilder StringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuffer.append(String.format("%s.weight= %s ;\n", mLayoutParamsObj, value));
+            StringBuilder.append(String.format("%s.weight= %s ;\n", mLayoutParamsObj, value));
         }
         return true;
     }
 
-    private boolean setScaleType(StringBuffer stringBuffer, String value) {
+    private boolean setScaleType(StringBuilder StringBuilder, String value) {
         mImports.add("android.widget.ImageView.ScaleType");
-        stringBuffer.append(String.format("%s.setScaleType(%s);\n", getObjName(), getScaleType(value)));
+        StringBuilder.append(String.format("%s.setScaleType(%s);\n", getObjName(), getScaleType(value)));
         return true;
     }
 
-    private boolean setMaxLines(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setMaxLines(%s);\n", getObjName(), value));
+    private boolean setMaxLines(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setMaxLines(%s);\n", getObjName(), value));
         return true;
     }
 
-    private boolean setMaxHeight(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setMaxHeight(%s);\n", getObjName(), getDimen(value)));
+    private boolean setMaxHeight(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setMaxHeight(%s);\n", getObjName(), getDimen(value)));
         return true;
     }
 
-    private boolean setMaxWidth(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setMaxWidth(%s);\n", getObjName(), getDimen(value)));
+    private boolean setMaxWidth(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setMaxWidth(%s);\n", getObjName(), getDimen(value)));
         return true;
     }
 
-    private boolean setMinWidth(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setMinWidth(%s);\n", getObjName(), getDimen(value)));
+    private boolean setMinWidth(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setMinWidth(%s);\n", getObjName(), getDimen(value)));
         return true;
     }
 
-    private boolean setMinHeight(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setMinHeight(%s);\n", getObjName(), getDimen(value)));
+    private boolean setMinHeight(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setMinHeight(%s);\n", getObjName(), getDimen(value)));
         return true;
     }
 
-    private boolean setLineSpacing(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setLineSpacing(%s,1);\n", getObjName(), getDimen(value)));
+    private boolean setLineSpacing(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setLineSpacing(%s,1);\n", getObjName(), getDimen(value)));
         return true;
     }
 
-    private boolean setEllipsize(StringBuffer stringBuffer, String value) {
+    private boolean setEllipsize(StringBuilder StringBuilder, String value) {
         mImports.add("android.text.TextUtils");
-        stringBuffer.append(String.format("%s.setEllipsize(%s);\n", getObjName(), getEllipsize(value)));
+        StringBuilder.append(String.format("%s.setEllipsize(%s);\n", getObjName(), getEllipsize(value)));
         return true;
     }
 
-    private boolean setClipToPadding(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setClipToPadding(%s);\n", getObjName(), value));
+    private boolean setClipToPadding(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setClipToPadding(%s);\n", getObjName(), value));
         return true;
     }
 
-    private boolean setVisibility(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setVisibility(%s);\n", getObjName(), getVisibility(value)));
+    private boolean setVisibility(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setVisibility(%s);\n", getObjName(), getVisibility(value)));
         return true;
     }
 
-    private boolean setTextColor(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setTextColor(%s);\n", getObjName(), getColor(value)));
+    private boolean setTextColor(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setTextColor(%s);\n", getObjName(), getColor(value)));
         return true;
     }
 
-    private boolean setText(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setText(%s);\n", getObjName(), getString(value)));
+    private boolean setText(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setText(%s);\n", getObjName(), getString(value)));
         return true;
     }
 
-    private boolean setTag(StringBuffer stringBuffer, String value) {
+    private boolean setTag(StringBuilder StringBuilder, String value) {
         if (value.startsWith("@id")) {
-            stringBuffer.append(String.format("%s.setTag(R.id.%s);\n", getObjName(),
+            StringBuilder.append(String.format("%s.setTag(R.id.%s);\n", getObjName(),
                     value.substring(value.indexOf("/") + 1)));
         } else if (value.startsWith("@android:id")) {
-            stringBuffer.append(String.format("%s.setTag(android.R.id.%s);\n", getObjName(),
+            StringBuilder.append(String.format("%s.setTag(android.R.id.%s);\n", getObjName(),
                     value.substring(value.indexOf("/") + 1)));
         } else {
-            stringBuffer.append(String.format("%s.setTag(%s);\n", getObjName(), getString(value)));
+            StringBuilder.append(String.format("%s.setTag(%s);\n", getObjName(), getString(value)));
         }
         return true;
     }
 
-    private boolean setMarginLeft(StringBuffer stringBuffer, String value) {
+    private boolean setMarginLeft(StringBuilder StringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuffer.append(String.format("%s.leftMargin= %s ;\n", mLayoutParamsObj, getWH(value)));
+            StringBuilder.append(String.format("%s.leftMargin= %s ;\n", mLayoutParamsObj, getWH(value)));
         }
         return true;
     }
 
-    private boolean setMarginTop(StringBuffer stringBuffer, String value) {
+    private boolean setMarginTop(StringBuilder StringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuffer.append(String.format("%s.topMargin= %s ;\n", mLayoutParamsObj, getWH(value)));
+            StringBuilder.append(String.format("%s.topMargin= %s ;\n", mLayoutParamsObj, getWH(value)));
         }
         return true;
     }
 
-    private boolean setMarginRight(StringBuffer stringBuffer, String value) {
+    private boolean setMarginRight(StringBuilder StringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuffer.append(String.format("%s.rightMargin= %s ;\n", mLayoutParamsObj, getWH(value)));
+            StringBuilder.append(String.format("%s.rightMargin= %s ;\n", mLayoutParamsObj, getWH(value)));
         }
         return true;
     }
 
-    private boolean setMarginBottom(StringBuffer stringBuffer, String value) {
+    private boolean setMarginBottom(StringBuilder StringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuffer.append(String.format("%s.bottomMargin= %s ;\n", mLayoutParamsObj, getWH(value)));
+            StringBuilder.append(String.format("%s.bottomMargin= %s ;\n", mLayoutParamsObj, getWH(value)));
         }
         return true;
     }
 
 
-    private boolean setTextSize(StringBuffer stringBuffer, String value) {
+    private boolean setTextSize(StringBuilder StringBuilder, String value) {
         String unit;
         String dim;
         if (value.startsWith("@")) {
@@ -549,48 +549,48 @@ public class View implements ITranslator {
                 dim = value.substring(0, value.indexOf("p"));
             }
         }
-        stringBuffer.append(String.format("%s.setTextSize(%s,%s);\n", getObjName(), unit, dim));
+        StringBuilder.append(String.format("%s.setTextSize(%s,%s);\n", getObjName(), unit, dim));
         mImports.add("android.util.TypedValue");
         return true;
     }
 
-    private boolean setImageResource(StringBuffer stringBuffer, String value) {
+    private boolean setImageResource(StringBuilder StringBuilder, String value) {
         if (value.startsWith("#") || value.startsWith("@color")) {
-            stringBuffer.append(String.format("%s.setBackgroundColor(%s);\n", getObjName(), getColor(value)));
+            StringBuilder.append(String.format("%s.setBackgroundColor(%s);\n", getObjName(), getColor(value)));
         } else {
-            stringBuffer.append(String.format("%s.setImageResource(%s);\n", getObjName(), getDrawable(value)));
+            StringBuilder.append(String.format("%s.setImageResource(%s);\n", getObjName(), getDrawable(value)));
         }
         return true;
     }
 
-    private boolean setBackground(StringBuffer stringBuffer, String value) {
+    private boolean setBackground(StringBuilder StringBuilder, String value) {
         if (value.startsWith("#") || value.startsWith("@color")) {
-            stringBuffer.append(String.format("%s.setBackgroundColor(%s);\n", getObjName(), getColor(value)));
+            StringBuilder.append(String.format("%s.setBackgroundColor(%s);\n", getObjName(), getColor(value)));
         } else if (value.equals("null")) {
-            stringBuffer.append(String.format("%s.setBackgroundDrawable(%s);\n", getObjName(), "null"));
+            StringBuilder.append(String.format("%s.setBackgroundDrawable(%s);\n", getObjName(), "null"));
         } else {
-            stringBuffer.append(String.format("%s.setBackgroundResource(%s);\n", getObjName(), getDrawable(value)));
+            StringBuilder.append(String.format("%s.setBackgroundResource(%s);\n", getObjName(), getDrawable(value)));
         }
         return true;
     }
 
-    private boolean setOrientation(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setOrientation(%s);\n", getObjName(), getOrientation(value)));
+    private boolean setOrientation(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setOrientation(%s);\n", getObjName(), getOrientation(value)));
         return true;
     }
 
-    private boolean setGravity(StringBuffer stringBuffer, String value) {
-        stringBuffer.append(String.format("%s.setGravity(%s);\n", getObjName(), getGravity(value)));
+    private boolean setGravity(StringBuilder StringBuilder, String value) {
+        StringBuilder.append(String.format("%s.setGravity(%s);\n", getObjName(), getGravity(value)));
         return true;
     }
 
-    private boolean setId(StringBuffer stringBuffer, String value) {
+    private boolean setId(StringBuilder StringBuilder, String value) {
         if (value.startsWith("@android:id")) {
             mId = "android.R.id." + value.substring(value.indexOf("/") + 1);
-            stringBuffer.append(String.format("%s.setId(%s);\n", getObjName(), mId));
+            StringBuilder.append(String.format("%s.setId(%s);\n", getObjName(), mId));
         } else {
             mId = "R.id." + value.substring(value.indexOf("/") + 1);
-            stringBuffer.append(String.format("%s.setId(%s);\n", getObjName(), mId));
+            StringBuilder.append(String.format("%s.setId(%s);\n", getObjName(), mId));
         }
         return true;
     }
@@ -703,7 +703,7 @@ public class View implements ITranslator {
 
     private String getGravity(String value) {
         String[] ss = value.split("\\|");
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ss.length; i++) {
             sb.append(getGravitySingle(ss[i]));
             if (i < ss.length - 1) {

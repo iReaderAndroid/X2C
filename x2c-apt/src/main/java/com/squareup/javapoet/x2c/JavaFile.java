@@ -246,6 +246,19 @@ public final class JavaFile {
       return addStaticImport(ClassName.get(constant.getDeclaringClass()), constant.name());
     }
 
+
+    /**
+     * The square team doesn't provide an import method,
+     * but the existing $T, $N tags for CodeBlocks can become very complex in generating this code,
+     *
+     *  LinearLayout.LayoutParams layoutParam1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+     *  ,(int)(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,150,res.getDisplayMetrics())));
+     *
+     *
+     *  So we can only add it based on the open source version
+     * @param imports
+     * @return
+     */
     public Builder addImports(TreeSet<String> imports) {
       if (imports != null) {
         this.imports.addAll(imports);

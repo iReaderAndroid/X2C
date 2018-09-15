@@ -21,7 +21,7 @@ group = "com.zhangyue.we"
 //发布到JCenter上的项目名字，必须填写
 def libName = "x2c-apt"
 // 版本号，下次更新是只需要更改版本号即可
-version = "1.0.6"
+version = "1.0.8"
 
 //生成源文件
 task sourcesJar(type: Jar) {
@@ -29,11 +29,11 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
-//文档打包成jar
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
+////文档打包成jar
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
 //拷贝javadoc文件
 task copyDoc(type: Copy) {
     from "${buildDir}/docs/"
@@ -42,7 +42,7 @@ task copyDoc(type: Copy) {
 
 //上传到jcenter所需要的源码文件
 artifacts {
-    archives javadocJar
+//    archives javadocJar
     archives sourcesJar
 }
 

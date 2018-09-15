@@ -5,9 +5,10 @@ import android.databinding.DataBindingX2C;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.zhangyue.we.x2c.demo.databinding.ActivityDatabindingBinding;
+
 import com.zhangyue.we.x2c.ano.Xml;
 import com.zhangyue.we.x2c.demo.R;
-import com.zhangyue.we.x2c.demo.databinding.ActivityDatabindingBinding;
 
 /**
  * @author：chengwei 2018/9/10

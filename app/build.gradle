@@ -34,6 +34,6 @@ dependencies {
 //        annotationProcessor project(':x2c-apt')
 //        implementation project(':x2c-lib')
 
-    annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.6'
+    annotationProcessor 'com.zhangyue.we:x2c-apt:1.0.8'
     implementation 'com.zhangyue.we:x2c-lib:1.0.6'
 }

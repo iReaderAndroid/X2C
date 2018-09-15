@@ -2,14 +2,15 @@
 
     <data>
 
+        <import type="com.zhangyue.demo.databinding.Bean" />
+
         <variable
             name="bean"
             type="com.zhangyue.demo.databinding.Bean" />
 
     </data>
 
-    <LinearLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"

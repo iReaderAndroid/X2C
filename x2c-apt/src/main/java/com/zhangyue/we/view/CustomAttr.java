@@ -25,14 +25,14 @@ public class CustomAttr implements ITranslator {
 
 
     @Override
-    public boolean translate(StringBuffer stringBuffer, String key, String value) {
+    public boolean translate(StringBuilder StringBuilder, String key, String value) {
         if (mAttrs == null || mAttrs.size() == 0) {
             return false;
         }
         Attr attr = mAttrs.get(key);
         if (attr != null) {
             if (attr.toFunc != null && attr.toFunc.name != null) {
-                stringBuffer.append(String.format(attr.toFunc.name + "\n", attr.toFunc.isView ? mView : mLayoutParams
+                StringBuilder.append(String.format(attr.toFunc.name + "\n", attr.toFunc.isView ? mView : mLayoutParams
                         , getValue(attr, value)));
             }
 
@@ -43,7 +43,7 @@ public class CustomAttr implements ITranslator {
 
     private String getValue(Attr attr, String value) {
         String[] ss = value.split("\\|");
-        StringBuffer ret = new StringBuffer();
+        StringBuilder ret = new StringBuilder();
         for (int i = 0; i < ss.length; i++) {
             ret.append(getSingleValue(attr, ss[i]));
             if (i < ss.length - 1) {
@@ -91,7 +91,7 @@ public class CustomAttr implements ITranslator {
     }
 
     @Override
-    public void onAttributeEnd(StringBuffer stringBuffer) {
+    public void onAttributeEnd(StringBuilder StringBuilder) {
 
     }
 }
