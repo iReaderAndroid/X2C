@@ -25,14 +25,14 @@ public class CustomAttr implements ITranslator {
 
 
     @Override
-    public boolean translate(StringBuilder StringBuilder, String key, String value) {
+    public boolean translate(StringBuilder stringBuilder, String key, String value) {
         if (mAttrs == null || mAttrs.size() == 0) {
             return false;
         }
         Attr attr = mAttrs.get(key);
         if (attr != null) {
             if (attr.toFunc != null && attr.toFunc.name != null) {
-                StringBuilder.append(String.format(attr.toFunc.name + "\n", attr.toFunc.isView ? mView : mLayoutParams
+                stringBuilder.append(String.format(attr.toFunc.name + "\n", attr.toFunc.isView ? mView : mLayoutParams
                         , getValue(attr, value)));
             }
 
@@ -91,7 +91,7 @@ public class CustomAttr implements ITranslator {
     }
 
     @Override
-    public void onAttributeEnd(StringBuilder StringBuilder) {
+    public void onAttributeEnd(StringBuilder stringBuilder) {
 
     }
 }

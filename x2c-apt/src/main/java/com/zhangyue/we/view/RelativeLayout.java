@@ -15,172 +15,172 @@ public class RelativeLayout implements ITranslator {
     }
 
     @Override
-    public boolean translate(StringBuilder StringBuilder, String key, String value) {
+    public boolean translate(StringBuilder stringBuilder, String key, String value) {
         switch (key) {
             case "android:layout_centerInParent":
-                return centerInParent(StringBuilder, value);
+                return centerInParent(stringBuilder, value);
             case "android:layout_centerVertical":
-                return centerVertical(StringBuilder, value);
+                return centerVertical(stringBuilder, value);
             case "android:layout_centerHorizontal":
-                return centerHorizontal(StringBuilder, value);
+                return centerHorizontal(stringBuilder, value);
             case "android:layout_alignParentLeft":
-                return alignParentLeft(StringBuilder, value);
+                return alignParentLeft(stringBuilder, value);
             case "android:layout_alignParentTop":
-                return alignParentTop(StringBuilder, value);
+                return alignParentTop(stringBuilder, value);
             case "android:layout_alignParentRight":
-                return alignParentRight(StringBuilder, value);
+                return alignParentRight(stringBuilder, value);
             case "android:layout_alignParentBottom":
-                return alignParentBottom(StringBuilder, value);
+                return alignParentBottom(stringBuilder, value);
             case "android:layout_above":
-                return above(StringBuilder, value);
+                return above(stringBuilder, value);
             case "android:layout_below":
-                return below(StringBuilder, value);
+                return below(stringBuilder, value);
             case "android:layout_toLeftOf":
-                return toLeftOf(StringBuilder, value);
+                return toLeftOf(stringBuilder, value);
             case "android:layout_toRightOf":
-                return toRightOf(StringBuilder, value);
+                return toRightOf(stringBuilder, value);
             case "android:layout_alignLeft":
-                return alignLeft(StringBuilder, value);
+                return alignLeft(stringBuilder, value);
             case "android:layout_alignTop":
-                return alignTop(StringBuilder, value);
+                return alignTop(stringBuilder, value);
             case "android:layout_alignRight":
-                return alignRight(StringBuilder, value);
+                return alignRight(stringBuilder, value);
             case "android:layout_alignBottom":
-                return alignBottom(StringBuilder, value);
+                return alignBottom(stringBuilder, value);
             default:
                 return false;
         }
     }
 
     @Override
-    public void onAttributeEnd(StringBuilder StringBuilder) {
+    public void onAttributeEnd(StringBuilder stringBuilder) {
 
     }
 
-    private boolean alignLeft(StringBuilder StringBuilder, String value) {
+    private boolean alignLeft(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_LEFT";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean alignTop(StringBuilder StringBuilder, String value) {
+    private boolean alignTop(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_TOP";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean alignRight(StringBuilder StringBuilder, String value) {
+    private boolean alignRight(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_RIGHT";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean alignBottom(StringBuilder StringBuilder, String value) {
+    private boolean alignBottom(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_BOTTOM";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean toRightOf(StringBuilder StringBuilder, String value) {
+    private boolean toRightOf(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.RIGHT_OF";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean toLeftOf(StringBuilder StringBuilder, String value) {
+    private boolean toLeftOf(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.LEFT_OF";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean above(StringBuilder StringBuilder, String value) {
+    private boolean above(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ABOVE";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean below(StringBuilder StringBuilder, String value) {
+    private boolean below(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.BELOW";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
 
-    private boolean alignParentLeft(StringBuilder StringBuilder, String value) {
+    private boolean alignParentLeft(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_PARENT_LEFT";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean alignParentTop(StringBuilder StringBuilder, String value) {
+    private boolean alignParentTop(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_PARENT_TOP";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean alignParentRight(StringBuilder StringBuilder, String value) {
+    private boolean alignParentRight(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_PARENT_RIGHT";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean alignParentBottom(StringBuilder StringBuilder, String value) {
+    private boolean alignParentBottom(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_PARENT_BOTTOM";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean centerVertical(StringBuilder StringBuilder, String value) {
+    private boolean centerVertical(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.CENTER_VERTICAL";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean centerHorizontal(StringBuilder StringBuilder, String value) {
+    private boolean centerHorizontal(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.CENTER_HORIZONTAL";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private boolean centerInParent(StringBuilder StringBuilder, String value) {
+    private boolean centerInParent(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.CENTER_IN_PARENT";
         String ruleValue = getRuleValue(value);
-        addRule(StringBuilder, rule, ruleValue);
+        addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
         return true;
     }
 
-    private void addRule(StringBuilder StringBuilder, String rule, String ruleValue) {
+    private void addRule(StringBuilder stringBuilder, String rule, String ruleValue) {
         if (mLayoutParamsObj != null) {
-            StringBuilder.append(String.format("%s.addRule(%s,%s);\n", mLayoutParamsObj, rule, ruleValue));
+            stringBuilder.append(String.format("%s.addRule(%s,%s);\n", mLayoutParamsObj, rule, ruleValue));
         }
     }
 

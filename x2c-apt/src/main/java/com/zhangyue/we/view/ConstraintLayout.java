@@ -16,96 +16,96 @@ public class ConstraintLayout implements ITranslator {
     }
 
     @Override
-    public boolean translate(StringBuilder StringBuilder, String key, String value) {
+    public boolean translate(StringBuilder stringBuilder, String key, String value) {
         switch (key) {
             case "app:layout_constraintDimensionRatio":
-                return setLayoutConstraintDimensionRatio(StringBuilder, value);
+                return setLayoutConstraintDimensionRatio(stringBuilder, value);
             case "app:layout_constraintLeft_toLeftOf":
-                return setLayoutConstraintLeftToLeftOf(StringBuilder, value);
+                return setLayoutConstraintLeftToLeftOf(stringBuilder, value);
             case "app:layout_constraintRight_toRightOf":
-                return setLayoutConstraintRightToRightOf(StringBuilder, value);
+                return setLayoutConstraintRightToRightOf(stringBuilder, value);
             case "app:layout_constraintTop_toBottomOf":
-                return setLayoutConstraintTopToBottomOf(StringBuilder, value);
+                return setLayoutConstraintTopToBottomOf(stringBuilder, value);
             case "app:layout_constraintBottom_toBottomOf":
-                return setLayoutConstraintBottomToBottomOf(StringBuilder, value);
+                return setLayoutConstraintBottomToBottomOf(stringBuilder, value);
             case "app:layout_constraintLeft_toRightOf":
-                return setLayoutConstraintLeftToRightOf(StringBuilder, value);
+                return setLayoutConstraintLeftToRightOf(stringBuilder, value);
             case "app:layout_constraintRight_toLeftOf":
-                return setLayoutConstraintRightToLeftOf(StringBuilder, value);
+                return setLayoutConstraintRightToLeftOf(stringBuilder, value);
             case "app:layout_constraintBottom_toTopOf":
-                return setLayoutConstraintBottomToTopOf(StringBuilder, value);
+                return setLayoutConstraintBottomToTopOf(stringBuilder, value);
             case "app:layout_constraintTop_toTopOf":
-                return setLayoutConstraintTopToTopOf(StringBuilder, value);
+                return setLayoutConstraintTopToTopOf(stringBuilder, value);
             case "app:layout_constrainedHeight":
-                return setLayoutConstrainedHeight(StringBuilder, value);
+                return setLayoutConstrainedHeight(stringBuilder, value);
             case "app:layout_constrainedWidth":
-                return setLayoutConstrainedWidth(StringBuilder, value);
+                return setLayoutConstrainedWidth(stringBuilder, value);
             case "app:layout_constraintVertical_bias":
-                return setLayoutConstraintVerticalBias(StringBuilder, value);
+                return setLayoutConstraintVerticalBias(stringBuilder, value);
             case "app:layout_constraintHorizontal_bias":
-                return setLayoutConstraintHorizontalBias(StringBuilder, value);
+                return setLayoutConstraintHorizontalBias(stringBuilder, value);
             case "app:layout_constraintHeight_default":
-                return setLayoutConstraintHeightDefault(StringBuilder, value);
+                return setLayoutConstraintHeightDefault(stringBuilder, value);
             case "app:layout_constraintWidth_default":
-                return setLayoutConstraintWidthDefault(StringBuilder, value);
+                return setLayoutConstraintWidthDefault(stringBuilder, value);
             case "app:layout_constraintVertical_weight":
-                return setLayoutConstraintVerticalWeight(StringBuilder, value);
+                return setLayoutConstraintVerticalWeight(stringBuilder, value);
             case "app:layout_constraintHorizontal_weight":
-                return setLayoutConstraintHorizontalWeight(StringBuilder, value);
+                return setLayoutConstraintHorizontalWeight(stringBuilder, value);
             case "app:layout_constraintVertical_chainStyle":
-                return setLayoutConstraintVerticalChainStyle(StringBuilder, value);
+                return setLayoutConstraintVerticalChainStyle(stringBuilder, value);
             case "app:layout_constraintHorizontal_chainStyle":
-                return setLayoutConstraintHorizontalChainStyle(StringBuilder, value);
+                return setLayoutConstraintHorizontalChainStyle(stringBuilder, value);
             case "app:layout_constraintCircle":
-                return setLayoutConstraintCircle(StringBuilder, value);
+                return setLayoutConstraintCircle(stringBuilder, value);
             case "app:layout_constraintCircleAngle":
-                return setLayoutConstraintCircleAngle(StringBuilder, value);
+                return setLayoutConstraintCircleAngle(stringBuilder, value);
             case "app:layout_constraintCircleRadius":
-                return setLayoutConstraintCircleRadius(StringBuilder, value);
+                return setLayoutConstraintCircleRadius(stringBuilder, value);
             case "app:layout_goneMarginBottom":
-                return setGoneMarginBottom(StringBuilder, value);
+                return setGoneMarginBottom(stringBuilder, value);
             case "app:layout_goneMarginLeft":
-                return setGoneMarginLeft(StringBuilder, value);
+                return setGoneMarginLeft(stringBuilder, value);
             case "app:layout_goneMarginRight":
-                return setGoneMarginRight(StringBuilder, value);
+                return setGoneMarginRight(stringBuilder, value);
             case "app:layout_goneMarginTop":
-                return setGoneMarginTop(StringBuilder, value);
+                return setGoneMarginTop(stringBuilder, value);
             case "app:layout_goneMarginEnd":
-                return setGoneMarginEnd(StringBuilder, value);
+                return setGoneMarginEnd(stringBuilder, value);
             case "app:layout_goneMarginStart":
-                return setGoneMarginStart(StringBuilder, value);
+                return setGoneMarginStart(stringBuilder, value);
             case "app:layout_editor_absoluteY":
-                return setLayoutEditorAbsoluteY(StringBuilder, value);
+                return setLayoutEditorAbsoluteY(stringBuilder, value);
             case "app:layout_editor_absoluteX":
-                return setLayoutEditorAbsoluteX(StringBuilder, value);
+                return setLayoutEditorAbsoluteX(stringBuilder, value);
             case "app:layout_constraintBaseline_toBaselineOf":
-                return setLayoutConstraintBaselineToBaselineOf(StringBuilder, value);
+                return setLayoutConstraintBaselineToBaselineOf(stringBuilder, value);
             case "app:layout_constraintStart_toEndOf":
-                return setLayoutConstraintStartToEndOf(StringBuilder, value);
+                return setLayoutConstraintStartToEndOf(stringBuilder, value);
             case "app:layout_constraintEnd_toEndOf":
-                return setLayoutConstraintEndToEndOf(StringBuilder, value);
+                return setLayoutConstraintEndToEndOf(stringBuilder, value);
             case "app:layout_constraintEnd_toStartOf":
-                return setLayoutConstraintEndToStartOf(StringBuilder, value);
+                return setLayoutConstraintEndToStartOf(stringBuilder, value);
             case "app:layout_constraintStart_toStartOf":
-                return setLayoutConstraintStartToStartOf(StringBuilder, value);
+                return setLayoutConstraintStartToStartOf(stringBuilder, value);
             case "app:layout_constraintGuide_begin":
-                return setLayoutConstraintGuideBegin(StringBuilder, value);
+                return setLayoutConstraintGuideBegin(stringBuilder, value);
             case "app:layout_constraintGuide_end":
-                return setLayoutConstraintGuideEnd(StringBuilder, value);
+                return setLayoutConstraintGuideEnd(stringBuilder, value);
             case "app:layout_constraintGuide_percent":
-                return setLayoutConstraintGuidePercent(StringBuilder, value);
+                return setLayoutConstraintGuidePercent(stringBuilder, value);
             case "app:layout_constraintWidth_min":
-                return setLayoutConstraintWidthMin(StringBuilder, value);
+                return setLayoutConstraintWidthMin(stringBuilder, value);
             case "app:layout_constraintWidth_max":
-                return setLayoutConstraintWidthMax(StringBuilder, value);
+                return setLayoutConstraintWidthMax(stringBuilder, value);
             case "app:layout_constraintHeight_min":
-                return setLayoutConstraintHeightMin(StringBuilder, value);
+                return setLayoutConstraintHeightMin(stringBuilder, value);
             case "app:layout_constraintHeight_max":
-                return setLayoutConstraintHeightMax(StringBuilder, value);
+                return setLayoutConstraintHeightMax(stringBuilder, value);
             case "app:layout_constraintHeight_percent":
-                return setLayoutConstraintHeightPercent(StringBuilder, value);
+                return setLayoutConstraintHeightPercent(stringBuilder, value);
             case "app:layout_constraintWidth_percent":
-                return setLayoutConstraintWidthPercent(StringBuilder, value);
+                return setLayoutConstraintWidthPercent(stringBuilder, value);
 
             default:
                 return false;

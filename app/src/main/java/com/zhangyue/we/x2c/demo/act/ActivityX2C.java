@@ -12,12 +12,12 @@ import com.zhangyue.we.x2c.demo.R;
  * @author:chengwei 2018/8/24
  * @description
  */
-@Xml(layouts = "activity_main")
+@Xml(layouts = "activity_main_inter")
 public class ActivityX2C extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        X2C.setContentView(this, R.layout.activity_main);
+        X2C.setContentView(this, R.layout.activity_main_inter);
         ViewStub stub = (ViewStub) findViewById(R.id.stub);
         stub.setLayoutResource(R.layout.stub_layout);
         stub.inflate();

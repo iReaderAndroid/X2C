@@ -77,10 +77,10 @@ public class LayoutReader {
                 View view = mStack.pop();
                 if (mStack.size() == 0) {
                     mRootView = view;
-                    StringBuilder StringBuilder = new StringBuilder();
-                    mRootView.translate(StringBuilder);
-                    StringBuilder.append("return ").append(mRootView.getObjName());
-                    LayoutWriter writer = new LayoutWriter(StringBuilder.toString(), mFiler, mName, mPackageName
+                    StringBuilder stringBuilder = new StringBuilder();
+                    mRootView.translate(stringBuilder);
+                    stringBuilder.append("return ").append(mRootView.getObjName());
+                    LayoutWriter writer = new LayoutWriter(stringBuilder.toString(), mFiler, mName, mPackageName
                             , Util.getLayoutCategory(mFile), mLayoutName, mRootView.getImports());
                     mFullName = writer.write();
                 }

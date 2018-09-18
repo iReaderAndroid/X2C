@@ -14,7 +14,7 @@ public class ActivityXML extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_inter);
         ViewStub stub = (ViewStub) findViewById(R.id.stub);
         stub.setLayoutResource(R.layout.stub_layout);
         stub.inflate();

@@ -270,7 +270,7 @@ public class LayoutManager {
                     if (line.contains("}")) {
                         break;
                     } else {
-                        line = line.substring(line.lastIndexOf("int") + 3, line.indexOf(";"))
+                        line = line.substring(line.indexOf("int") + 3, line.indexOf(";"))
                                 .replaceAll(" ", "").trim();
                         String[] lineSplit = line.split("=");
                         int id = Integer.decode(lineSplit[1]);
