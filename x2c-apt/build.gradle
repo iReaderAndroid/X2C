@@ -21,7 +21,7 @@ group = "com.zhangyue.we"
 //发布到JCenter上的项目名字，必须填写
 def libName = "x2c-apt"
 // 版本号，下次更新是只需要更改版本号即可
-version = "1.1.0"
+version = "1.1.1"
 
 //生成源文件
 task sourcesJar(type: Jar) {

@@ -148,7 +148,7 @@ public class View implements ITranslator {
         String obj = getObjName();
         if (mTagName.equals("include")) {
             String javaName = LayoutManager.instance().translate(getIncludeLayout());
-            stringBuilder.append(String.format("%s %s =(View) new %s().createView(ctx,0);\n"
+            stringBuilder.append(String.format("%s %s =(View) new %s().createView(ctx);\n"
                     , mName, obj, javaName));
         } else {
             stringBuilder.append(String.format("%s %s = new %s(ctx);\n", mName, obj, mName));
