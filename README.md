@@ -32,7 +32,7 @@ After the development integration, we did a simple test, the performance compari
 #### 1.Add dependency
 Add dependencies in the build.gradle file of the module
 ```java
-annotationProcessor 'com.zhangyue.we:x2c-apt:1.1.1'
+annotationProcessor 'com.zhangyue.we:x2c-apt:1.1.2'
 implementation 'com.zhangyue.we:x2c-lib:1.0.6'
 ```
 

@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -204,7 +205,7 @@ public class LayoutManager {
     private File getRootFile() {
         try {
             JavaFileObject fileObject = mFiler.createSourceFile("bb");
-            String path = fileObject.toUri().toString();
+            String path = URLDecoder.decode(fileObject.toUri().toString(),"utf-8");
             String preFix = "file:/";
             if (path.startsWith(preFix)) {
                 path = path.substring(preFix.length() - 1);
