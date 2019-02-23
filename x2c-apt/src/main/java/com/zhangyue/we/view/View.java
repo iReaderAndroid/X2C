@@ -568,6 +568,14 @@ public class View implements ITranslator {
             stringBuilder.append(String.format("%s.setBackgroundColor(%s);\n", getObjName(), getColor(value)));
         } else if (value.equals("null")) {
             stringBuilder.append(String.format("%s.setBackgroundDrawable(%s);\n", getObjName(), "null"));
+        } else if (value.startsWith("?")) {
+            String objName = getObjName();
+            stringBuilder.append("try {\n");
+            stringBuilder.append(String.format("    %s.setBackgroundColor(%s);\n", objName, getUnknown(value)));
+            stringBuilder.append("} catch (Exception e) {\n");
+            stringBuilder.append("    //这里再来异常就是不支持的资源类型\n");
+            stringBuilder.append(String.format("    %s.setBackgroundResource(%s);\n", objName, getUnknown(value)));
+            stringBuilder.append("}\n");
         } else {
             stringBuilder.append(String.format("%s.setBackgroundResource(%s);\n", getObjName(), getDrawable(value)));
         }
@@ -698,6 +706,14 @@ public class View implements ITranslator {
             return "R.mipmap." + value.substring(value.indexOf("/") + 1);
         }
         return value;
+    }
+
+    public static String getUnknown(String value) {
+        if (value.startsWith("?android:attr")) {
+            return "android.R.attr." + value.substring(value.indexOf("/") + 1);
+        } else {
+            return "R.attr." + value.substring(value.indexOf("/") + 1);
+        }
     }
 
 
