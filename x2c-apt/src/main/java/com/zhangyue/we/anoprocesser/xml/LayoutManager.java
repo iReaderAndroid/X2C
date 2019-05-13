@@ -205,7 +205,7 @@ public class LayoutManager {
     private File getRootFile() {
         try {
             JavaFileObject fileObject = mFiler.createSourceFile("bb");
-            String path = URLDecoder.decode(fileObject.toUri().toString(),"utf-8");
+            String path = URLDecoder.decode(fileObject.toUri().toString(), "utf-8");
             String preFix = "file:/";
             if (path.startsWith(preFix)) {
                 path = path.substring(preFix.length() - 1);
@@ -290,17 +290,34 @@ public class LayoutManager {
 
     private File getRFile() {
         String sep = File.separator;
-        String basePath = "";
+        File rFile = null;
         try {
-            JavaFileObject filerSourceFile = mFiler
-                    .createSourceFile("test");
-            basePath = filerSourceFile.toUri().getPath()
-                    .replace("apt", "r")
-                    .replace("test.java", "");
+            JavaFileObject filerSourceFile = mFiler.createSourceFile("test");
+            String path = filerSourceFile.toUri().getPath();
+            String basePath = path.replace("apt", "r").replace("test.java", "");
+            rFile = new File(basePath, mPackageName.replace(".", sep) + sep + "R.java");
+            if (!rFile.exists()) {
+                basePath = path.substring(0, path.indexOf("apt"));
+                String javaFilePath = path.substring(path.indexOf("apt") + "apt".length());
+                File temp = new File(new File(new File(basePath).getParentFile(), "not_namespaced_r_class_sources"), javaFilePath).getParentFile();
+                File[] files = temp.listFiles();
+                if (files != null) {
+                    for (File dir : files) {
+                        File file = new File(dir, "r" + sep + mPackageName.replace(".", sep) + sep + "R.java");
+                        if (file.exists()) {
+                            rFile = file;
+                            break;
+                        }
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new File(basePath, mPackageName.replace(".", sep) + sep + "R.java");
+        if (rFile == null || !rFile.exists()) {
+            Log.e("X2C not find R.java!!!");
+        }
+        return rFile;
     }
 
     public HashMap<String, Attr> getAttrs() {
