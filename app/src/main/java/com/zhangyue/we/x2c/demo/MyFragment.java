@@ -21,7 +21,7 @@ public class MyFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return X2C.inflate(inflater.getContext(), R.layout.fragmetn_layout, null);
+        return X2C.inflate(inflater.getContext(), R.layout.fragmetn_layout, container, false);
     }
 
 }
