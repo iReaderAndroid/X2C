@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * @author:chengwei 2018/8/9
  * @description
  */
-public class X2C {
+public final class X2C {
     private static final SparseArray<IViewCreator> sSparseArray = new SparseArray<>();
 
     /**
