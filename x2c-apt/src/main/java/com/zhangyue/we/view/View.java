@@ -51,6 +51,8 @@ public class View implements ITranslator {
         this.mImports.add("android.util.TypedValue");
         this.mImports.add("android.graphics.Color");
         this.mImports.add("android.view.ViewGroup");
+        this.mImports.add("android.graphics.drawable.ColorDrawable");
+        this.mImports.add("com.zhangyue.we.x2c.X2CUtils");
         this.mImports.add(String.format("%s.R", mPackageName));
 
     }
@@ -449,12 +451,12 @@ public class View implements ITranslator {
     }
 
     private boolean setMinWidth(StringBuilder stringBuilder, String value) {
-        stringBuilder.append(String.format("%s.setMinWidth(%s);\n", getObjName(), getDimen(value)));
+        stringBuilder.append(String.format("%s.setMinimumWidth(%s);\n", getObjName(), getDimen(value)));
         return true;
     }
 
     private boolean setMinHeight(StringBuilder stringBuilder, String value) {
-        stringBuilder.append(String.format("%s.setMinHeight(%s);\n", getObjName(), getDimen(value)));
+        stringBuilder.append(String.format("%s.setMinimumHeight(%s);\n", getObjName(), getDimen(value)));
         return true;
     }
 
@@ -536,7 +538,7 @@ public class View implements ITranslator {
         String dim;
         if (value.startsWith("@")) {
             unit = "TypedValue.COMPLEX_UNIT_PX";
-            dim = String.format("(int)res.getDimension(R.dimen.%s)", value.substring(value.indexOf("/") + 1));
+            dim = String.format("(int)res.getDimension(R.dimen.%s)", getDimen(value));
         } else {
             if (value.endsWith("dp") || value.endsWith("dip")) {
                 unit = "TypedValue.COMPLEX_UNIT_DIP";
@@ -555,8 +557,20 @@ public class View implements ITranslator {
     }
 
     private boolean setImageResource(StringBuilder stringBuilder, String value) {
-        if (value.startsWith("#") || value.startsWith("@color")) {
-            stringBuilder.append(String.format("%s.setBackgroundColor(%s);\n", getObjName(), getColor(value)));
+        if (value.startsWith("#") || value.startsWith("@color") || value.startsWith("@android:color")) {
+            stringBuilder.append(String.format("%s.setImageDrawable(new ColorDrawable(%s));\n", getObjName(), getColor(value)));
+        } else if (value.equals("null")) {
+            stringBuilder.append(String.format("%s.setImageDrawable(%s);\n", getObjName(), "null"));
+        } else if (value.startsWith("?")) {
+            String objName = getObjName();
+//            stringBuilder.append("try {\n");
+//            stringBuilder.append(String.format("    %s.setImageDrawable(new ColorDrawable(res.getColor(%s)));\n", objName, getUnknown(value)));
+//            stringBuilder.append("} catch (Exception e) {\n");
+//            stringBuilder.append("    //这里再来异常就是不支持的资源类型\n");
+//            stringBuilder.append(String.format("    %s.setImageResource(%s);\n", objName, getUnknown(value)));
+//            stringBuilder.append("}\n");
+
+            stringBuilder.append(String.format("%s.setImageResource(X2CUtils.getResourceIdFromAttr(ctx, %s));\n", objName, getUnknown(value)));
         } else {
             stringBuilder.append(String.format("%s.setImageResource(%s);\n", getObjName(), getDrawable(value)));
         }
@@ -564,18 +578,13 @@ public class View implements ITranslator {
     }
 
     private boolean setBackground(StringBuilder stringBuilder, String value) {
-        if (value.startsWith("#") || value.startsWith("@color")) {
+        if (value.startsWith("#") || value.startsWith("@color") || value.startsWith("@android:color")) {
             stringBuilder.append(String.format("%s.setBackgroundColor(%s);\n", getObjName(), getColor(value)));
         } else if (value.equals("null")) {
             stringBuilder.append(String.format("%s.setBackgroundDrawable(%s);\n", getObjName(), "null"));
         } else if (value.startsWith("?")) {
             String objName = getObjName();
-            stringBuilder.append("try {\n");
-            stringBuilder.append(String.format("    %s.setBackgroundColor(%s);\n", objName, getUnknown(value)));
-            stringBuilder.append("} catch (Exception e) {\n");
-            stringBuilder.append("    //这里再来异常就是不支持的资源类型\n");
-            stringBuilder.append(String.format("    %s.setBackgroundResource(%s);\n", objName, getUnknown(value)));
-            stringBuilder.append("}\n");
+            stringBuilder.append(String.format("%s.setBackgroundResource(X2CUtils.getResourceIdFromAttr(ctx, %s));\n", objName, getUnknown(value)));
         } else {
             stringBuilder.append(String.format("%s.setBackgroundResource(%s);\n", getObjName(), getDrawable(value)));
         }
@@ -637,8 +646,10 @@ public class View implements ITranslator {
     }
 
     public static String getDimen(String value) {
-        if (value.startsWith("@")) {
+        if (value.startsWith("@dimen")) {
             return String.format("(int)res.getDimension(R.dimen.%s)", value.substring(value.indexOf("/") + 1));
+        } else if (value.startsWith("@android:dimen")) {
+            return String.format("(int)res.getDimension(android.R.dimen.%s)", value.substring(value.indexOf("/") + 1));
         }
         String unit;
         String dim;
@@ -667,7 +678,7 @@ public class View implements ITranslator {
             return "Color.parseColor(\"" + value + "\")";
         } else if (value.startsWith("@android:color")) {
             return "res.getColor(android.R.color." + value.substring(value.indexOf("/") + 1) + ")";
-        } else if (value.startsWith("@")) {
+        } else if (value.startsWith("@color")) {
             return "res.getColor(R.color." + value.substring(value.indexOf("/") + 1) + ")";
         } else {
             return "0";
@@ -693,8 +704,10 @@ public class View implements ITranslator {
     }
 
     public static String getString(String value) {
-        if (value.startsWith("@")) {
+        if (value.startsWith("@string")) {
             return "R.string." + value.substring(value.indexOf("/") + 1);
+        } else if (value.startsWith("@android:string")) {
+            return "android.R.string." + value.substring(value.indexOf("/") + 1);
         }
         return String.format("\"%s\"", value);
     }
@@ -702,8 +715,12 @@ public class View implements ITranslator {
     public static String getDrawable(String value) {
         if (value.startsWith("@drawable")) {
             return "R.drawable." + value.substring(value.indexOf("/") + 1);
+        } else if (value.startsWith("@android:drawable")) {
+            return "android.R.drawable." + value.substring(value.indexOf("/") + 1);
         } else if (value.startsWith("@mipmap")) {
             return "R.mipmap." + value.substring(value.indexOf("/") + 1);
+        }else if (value.startsWith("@android:mipmap")) {
+            return "android.R.mipmap." + value.substring(value.indexOf("/") + 1);
         }
         return value;
     }
@@ -715,7 +732,6 @@ public class View implements ITranslator {
             return "R.attr." + value.substring(value.indexOf("/") + 1);
         }
     }
-
 
     private String getGravity(String value) {
         String[] ss = value.split("\\|");

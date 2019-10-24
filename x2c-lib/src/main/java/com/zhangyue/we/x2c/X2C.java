@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * @author:chengwei 2018/8/9
  * @description
  */
-public class X2C {
+public final class X2C {
     private static final SparseArray<IViewCreator> sSparseArray = new SparseArray<>();
 
     /**
@@ -39,21 +39,26 @@ public class X2C {
      * @param layoutId layout的资源id
      */
     public static View inflate(Context context, int layoutId, ViewGroup parent) {
-        return inflate(context, layoutId, parent, true);
+        return inflate(context, layoutId, parent, parent != null);
     }
 
     public static View inflate(Context context, int layoutId, ViewGroup parent, boolean attach) {
-        if (context == null) {
-            throw new IllegalArgumentException("Context must not be null");
-        }
-        View view = getView(context, layoutId);
+        return inflate(LayoutInflater.from(context), layoutId, parent, attach);
+    }
+
+    public static View inflate(LayoutInflater inflater, int layoutId, ViewGroup parent) {
+        return inflate(inflater, layoutId, parent, parent != null);
+    }
+
+    public static View inflate(LayoutInflater inflater, int layoutId, ViewGroup parent, boolean attach) {
+        View view = getView(inflater.getContext(), layoutId);
         if (view != null) {
-            if (parent != null) {
+            if (parent != null && attach) {
                 parent.addView(view);
             }
             return view;
         } else {
-            return LayoutInflater.from(context).inflate(layoutId, parent, attach);
+            return inflater.inflate(layoutId, parent, attach);
         }
     }
 
