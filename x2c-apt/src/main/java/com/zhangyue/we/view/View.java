@@ -430,7 +430,7 @@ public class View implements ITranslator {
 
     private boolean setWeight(StringBuilder stringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuilder.append(String.format("%s.weight= %s ;\n", mLayoutParamsObj, value));
+            stringBuilder.append(String.format("%s.weight= %sf ;\n", mLayoutParamsObj, value));
         }
         return true;
     }
