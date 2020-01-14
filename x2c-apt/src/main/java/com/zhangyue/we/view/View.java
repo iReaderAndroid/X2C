@@ -550,7 +550,7 @@ public class View implements ITranslator {
         String dim;
         if (value.startsWith("@")) {
             unit = "TypedValue.COMPLEX_UNIT_PX";
-            dim = String.format("(int)res.getDimension(R.dimen.%s)", getDimen(value));
+            dim = String.format("res.getDimension(R.dimen.%s)", value.substring(value.indexOf("/") + 1));
         } else {
             if (value.endsWith("dp") || value.endsWith("dip")) {
                 unit = "TypedValue.COMPLEX_UNIT_DIP";
