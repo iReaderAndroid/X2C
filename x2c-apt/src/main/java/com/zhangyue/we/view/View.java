@@ -169,6 +169,10 @@ public class View implements ITranslator {
             String paramsName = mParent.getLayoutParams();
             stringBuilder.append(String.format("%s %s = new %s(%s,%s);\n", paramsName, mLayoutParamsObj
                     , paramsName, width, height));
+        } else {
+            String paramsName = getLayoutParams();
+            stringBuilder.append(String.format("%s %s = new %s(%s,%s);\n", paramsName, mLayoutParamsObj
+                    , paramsName, width, height));
         }
 
         ArrayList<ITranslator> translators = createTranslator();
@@ -206,6 +210,8 @@ public class View implements ITranslator {
         if (mParent != null) {
             stringBuilder.append(String.format("%s.setLayoutParams(%s);\n", obj, mLayoutParamsObj));
             stringBuilder.append(String.format("%s.addView(%s);\n", mParent.getObjName(), obj));
+        } else {
+            stringBuilder.append(String.format("%s.setLayoutParams(%s);\n", obj, mLayoutParamsObj));
         }
 
         if (!mPadding.equals("0")) {
@@ -430,7 +436,7 @@ public class View implements ITranslator {
 
     private boolean setWeight(StringBuilder stringBuilder, String value) {
         if (mLayoutParamsObj != null) {
-            stringBuilder.append(String.format("%s.weight= %s ;\n", mLayoutParamsObj, value));
+            stringBuilder.append(String.format("%s.weight= %sf ;\n", mLayoutParamsObj, value));
         }
         return true;
     }
@@ -544,7 +550,7 @@ public class View implements ITranslator {
         String dim;
         if (value.startsWith("@")) {
             unit = "TypedValue.COMPLEX_UNIT_PX";
-            dim = String.format("(int)res.getDimension(R.dimen.%s)", getDimen(value));
+            dim = String.format("res.getDimension(R.dimen.%s)", value.substring(value.indexOf("/") + 1));
         } else {
             if (value.endsWith("dp") || value.endsWith("dip")) {
                 unit = "TypedValue.COMPLEX_UNIT_DIP";

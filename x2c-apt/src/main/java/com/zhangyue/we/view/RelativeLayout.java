@@ -31,6 +31,10 @@ public class RelativeLayout implements ITranslator {
                 return alignParentRight(stringBuilder, value);
             case "android:layout_alignParentBottom":
                 return alignParentBottom(stringBuilder, value);
+            case "android:layout_alignParentStart":
+                return alignParentStart(stringBuilder, value);
+            case "android:layout_alignParentEnd":
+                return alignParentEnd(stringBuilder, value);
             case "android:layout_above":
                 return above(stringBuilder, value);
             case "android:layout_below":
@@ -39,6 +43,10 @@ public class RelativeLayout implements ITranslator {
                 return toLeftOf(stringBuilder, value);
             case "android:layout_toRightOf":
                 return toRightOf(stringBuilder, value);
+            case "android:layout_toStartOf":
+                return toStartOf(stringBuilder, value);
+            case "android:layout_toEndOf":
+                return toEndOf(stringBuilder, value);
             case "android:layout_alignLeft":
                 return alignLeft(stringBuilder, value);
             case "android:layout_alignTop":
@@ -47,6 +55,10 @@ public class RelativeLayout implements ITranslator {
                 return alignRight(stringBuilder, value);
             case "android:layout_alignBottom":
                 return alignBottom(stringBuilder, value);
+            case "android:layout_alignStart":
+                return alignStart(stringBuilder, value);
+            case "android:layout_alignEnd":
+                return alignEnd(stringBuilder, value);
             default:
                 return false;
         }
@@ -65,6 +77,14 @@ public class RelativeLayout implements ITranslator {
         return true;
     }
 
+    private boolean alignStart(StringBuilder stringBuilder, String value) {
+        String rule = "RelativeLayout.ALIGN_START";
+        String ruleValue = getRuleValue(value);
+        addRule(stringBuilder, rule, ruleValue);
+        mImports.add("android.widget.RelativeLayout");
+        return true;
+    }
+
     private boolean alignTop(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_TOP";
         String ruleValue = getRuleValue(value);
@@ -75,6 +95,14 @@ public class RelativeLayout implements ITranslator {
 
     private boolean alignRight(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_RIGHT";
+        String ruleValue = getRuleValue(value);
+        addRule(stringBuilder, rule, ruleValue);
+        mImports.add("android.widget.RelativeLayout");
+        return true;
+    }
+
+    private boolean alignEnd(StringBuilder stringBuilder, String value) {
+        String rule = "RelativeLayout.ALIGN_END";
         String ruleValue = getRuleValue(value);
         addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
@@ -99,6 +127,22 @@ public class RelativeLayout implements ITranslator {
 
     private boolean toLeftOf(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.LEFT_OF";
+        String ruleValue = getRuleValue(value);
+        addRule(stringBuilder, rule, ruleValue);
+        mImports.add("android.widget.RelativeLayout");
+        return true;
+    }
+
+    private boolean toEndOf(StringBuilder stringBuilder, String value) {
+        String rule = "RelativeLayout.END_OF";
+        String ruleValue = getRuleValue(value);
+        addRule(stringBuilder, rule, ruleValue);
+        mImports.add("android.widget.RelativeLayout");
+        return true;
+    }
+
+    private boolean toStartOf(StringBuilder stringBuilder, String value) {
+        String rule = "RelativeLayout.START_OF";
         String ruleValue = getRuleValue(value);
         addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
@@ -148,6 +192,22 @@ public class RelativeLayout implements ITranslator {
 
     private boolean alignParentBottom(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_PARENT_BOTTOM";
+        String ruleValue = getRuleValue(value);
+        addRule(stringBuilder, rule, ruleValue);
+        mImports.add("android.widget.RelativeLayout");
+        return true;
+    }
+
+    private boolean alignParentStart(StringBuilder stringBuilder, String value) {
+        String rule = "RelativeLayout.ALIGN_PARENT_START";
+        String ruleValue = getRuleValue(value);
+        addRule(stringBuilder, rule, ruleValue);
+        mImports.add("android.widget.RelativeLayout");
+        return true;
+    }
+
+    private boolean alignParentEnd(StringBuilder stringBuilder, String value) {
+        String rule = "RelativeLayout.ALIGN_PARENT_END";
         String ruleValue = getRuleValue(value);
         addRule(stringBuilder, rule, ruleValue);
         mImports.add("android.widget.RelativeLayout");
