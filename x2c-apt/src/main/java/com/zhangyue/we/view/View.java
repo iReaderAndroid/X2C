@@ -592,8 +592,8 @@ public class View implements ITranslator {
     private boolean setBackground(StringBuilder stringBuilder, String value) {
         if (value.startsWith("#") || value.startsWith("@color") || value.startsWith("@android:color")) {
             stringBuilder.append(String.format("%s.setBackgroundColor(%s);\n", getObjName(), getColor(value)));
-        } else if (value.equals("null")) {
-            stringBuilder.append(String.format("%s.setBackgroundDrawable(%s);\n", getObjName(), "null"));
+        } else if (value.equals("@null")) {
+            stringBuilder.append(String.format("%s.setBackgroundResource(0);\n", getObjName()));
         } else if (value.startsWith("?")) {
             String objName = getObjName();
             stringBuilder.append(String.format("%s.setBackgroundResource(X2CUtils.getResourceIdFromAttr(ctx, %s));\n", objName, getUnknown(value)));
