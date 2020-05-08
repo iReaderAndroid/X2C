@@ -39,6 +39,8 @@ public class RelativeLayout implements ITranslator {
                 return above(stringBuilder, value);
             case "android:layout_below":
                 return below(stringBuilder, value);
+            case "android:layout_alignBaseline":
+                return alignBase(stringBuilder, value);
             case "android:layout_toLeftOf":
                 return toLeftOf(stringBuilder, value);
             case "android:layout_toRightOf":
@@ -165,7 +167,14 @@ public class RelativeLayout implements ITranslator {
         return true;
     }
 
-
+    private boolean alignBase(StringBuilder stringBuilder, String value) {
+        String rule = "RelativeLayout.ALIGN_BASELINE";
+        String ruleValue = getRuleValue(value);
+        addRule(stringBuilder, rule, ruleValue);
+        mImports.add("android.widget.RelativeLayout");
+        return true;
+    }
+    
     private boolean alignParentLeft(StringBuilder stringBuilder, String value) {
         String rule = "RelativeLayout.ALIGN_PARENT_LEFT";
         String ruleValue = getRuleValue(value);
