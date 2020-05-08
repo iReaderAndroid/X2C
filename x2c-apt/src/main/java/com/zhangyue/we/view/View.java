@@ -393,6 +393,8 @@ public class View implements ITranslator {
                 return setLayoutGravity(stringBuilder, value);
             case "android:alpha":
                 return setAlpha(stringBuilder, value);
+            case "android:layout":
+                return setAndroidLayout(stringBuilder, value);
             case "android:name":
                 mAndroidName = value;
                 return true;
@@ -426,6 +428,11 @@ public class View implements ITranslator {
 
     private boolean setAlpha(StringBuilder stringBuilder, String value) {
         stringBuilder.append(String.format("%s.setAlpha(%s);\n", getObjName(), getFloat(value)));
+        return true;
+    }
+
+    private boolean setAndroidLayout(StringBuilder stringBuilder, String value) {
+        stringBuilder.append(String.format("%s.setLayoutResource(%s);\n", getObjName(), getLayoutResource(value)));
         return true;
     }
 
@@ -711,6 +718,13 @@ public class View implements ITranslator {
         return "0";
     }
 
+    public static String getLayoutResource(String value) {
+        if (value.startsWith("@layout/")) {
+            return String.format("R.layout.%s", value.substring(value.lastIndexOf("/") + 1));
+        }
+        return "@null";
+    }
+    
     public static String getFloat(String value) {
         return value + "f";
     }
