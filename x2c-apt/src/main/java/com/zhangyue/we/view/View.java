@@ -318,6 +318,8 @@ public class View implements ITranslator {
                 return setText(stringBuilder, value);
             case "android:background":
                 return setBackground(stringBuilder, value);
+            case "android:indeterminateDrawable":
+                return setIndeterminateDrawable(stringBuilder, value);
             case "android:textStyle":
                 return setTypeface(stringBuilder, value);
             case "android:layout_margin":
@@ -600,6 +602,11 @@ public class View implements ITranslator {
         } else {
             stringBuilder.append(String.format("%s.setBackgroundResource(%s);\n", getObjName(), getDrawable(value)));
         }
+        return true;
+    }
+
+    private boolean setIndeterminateDrawable(StringBuilder stringBuilder, String value) {
+        stringBuilder.append(String.format("%s.setIndeterminateDrawable(ctx.getResources().getDrawable(%s));\n", getObjName(), getDrawable(value)));
         return true;
     }
 
