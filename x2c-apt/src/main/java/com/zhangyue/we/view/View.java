@@ -322,6 +322,8 @@ public class View implements ITranslator {
                 return setIndeterminateDrawable(stringBuilder, value);
             case "android:textStyle":
                 return setTypeface(stringBuilder, value);
+            case "android:singleLine":
+                return setSingleLine(stringBuilder, value);
             case "android:layout_margin":
                 return setMargin(stringBuilder, value);
             case "android:layout_marginLeft":
@@ -418,6 +420,11 @@ public class View implements ITranslator {
     private boolean setTypeface(StringBuilder stringBuilder, String value) {
         mImports.add("android.graphics.Typeface");
         stringBuilder.append(String.format("%s.setTypeface(%s);\n", getObjName(), getTextStyle(value)));
+        return true;
+    }
+
+    private boolean setSingleLine(StringBuilder stringBuilder, String value) {
+        stringBuilder.append(String.format("%s.setSingleLine(%s);\n", getObjName(), "true".equals(value) ? "true" : "false"));
         return true;
     }
 
