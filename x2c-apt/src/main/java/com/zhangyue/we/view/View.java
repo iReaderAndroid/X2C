@@ -677,6 +677,10 @@ public class View implements ITranslator {
             dim = value.substring(0, value.indexOf("p"));
         }
 
+        if (dim.contains(".")) {
+            dim = dim + "f";
+        }
+
         return String.format("(int)(TypedValue.applyDimension(%s,%s,res.getDisplayMetrics()))"
                 , unit, dim);
     }
