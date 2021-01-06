@@ -78,6 +78,8 @@ public class CustomAttr implements ITranslator {
             return View.getString(value);
         } else if (value.startsWith("@anim/")) {
             return "R.anim." + value.substring(value.indexOf("/") + 1);
+        } else if (value.startsWith("@layout/")) {
+            return "R.layout." + value.substring(value.indexOf("/") + 1);
         } else {
             switch (attr.toFunc.paramsType.toLowerCase()) {
                 case "float":
