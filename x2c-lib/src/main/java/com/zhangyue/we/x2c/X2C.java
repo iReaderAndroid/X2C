@@ -54,7 +54,13 @@ public final class X2C {
         View view = getView(inflater.getContext(), layoutId);
         if (view != null) {
             if (parent != null && attach) {
-                parent.addView(view);
+                Object width = view.getTag(R.id.x2c_rootview_width);
+                Object height = view.getTag(R.id.x2c_rootview_height);
+                if (width instanceof Integer && height instanceof Integer) {
+                    parent.addView(view, (int) width, (int) height);
+                } else {
+                    parent.addView(view);
+                }
             }
             return view;
         } else {
