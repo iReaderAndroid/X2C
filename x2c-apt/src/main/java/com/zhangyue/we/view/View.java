@@ -315,8 +315,12 @@ public class View implements ITranslator {
                 return setText(stringBuilder, value);
             case "android:background":
                 return setBackground(stringBuilder, value);
+            case "android:indeterminateDrawable":
+                return setIndeterminateDrawable(stringBuilder, value);
             case "android:textStyle":
                 return setTypeface(stringBuilder, value);
+            case "android:singleLine":
+                return setSingleLine(stringBuilder, value);
             case "android:layout_margin":
                 return setMargin(stringBuilder, value);
             case "android:layout_marginLeft":
@@ -388,6 +392,8 @@ public class View implements ITranslator {
                 return setLayoutGravity(stringBuilder, value);
             case "android:alpha":
                 return setAlpha(stringBuilder, value);
+            case "android:layout":
+                return setAndroidLayout(stringBuilder, value);
             case "android:name":
                 mAndroidName = value;
                 return true;
@@ -414,6 +420,11 @@ public class View implements ITranslator {
         return true;
     }
 
+    private boolean setSingleLine(StringBuilder stringBuilder, String value) {
+        stringBuilder.append(String.format("%s.setSingleLine(%s);\n", getObjName(), "true".equals(value) ? "true" : "false"));
+        return true;
+    }
+
     @Override
     public void onAttributeEnd(StringBuilder stringBuilder) {
 
@@ -421,6 +432,11 @@ public class View implements ITranslator {
 
     private boolean setAlpha(StringBuilder stringBuilder, String value) {
         stringBuilder.append(String.format("%s.setAlpha(%s);\n", getObjName(), getFloat(value)));
+        return true;
+    }
+
+    private boolean setAndroidLayout(StringBuilder stringBuilder, String value) {
+        stringBuilder.append(String.format("%s.setLayoutResource(%s);\n", getObjName(), getLayoutResource(value)));
         return true;
     }
 
@@ -600,6 +616,11 @@ public class View implements ITranslator {
         return true;
     }
 
+    private boolean setIndeterminateDrawable(StringBuilder stringBuilder, String value) {
+        stringBuilder.append(String.format("%s.setIndeterminateDrawable(ctx.getResources().getDrawable(%s));\n", getObjName(), getDrawable(value)));
+        return true;
+    }
+
     private boolean setOrientation(StringBuilder stringBuilder, String value) {
         stringBuilder.append(String.format("%s.setOrientation(%s);\n", getObjName(), getOrientation(value)));
         return true;
@@ -705,6 +726,13 @@ public class View implements ITranslator {
         return "0";
     }
 
+    public static String getLayoutResource(String value) {
+        if (value.startsWith("@layout/")) {
+            return String.format("R.layout.%s", value.substring(value.lastIndexOf("/") + 1));
+        }
+        return "@null";
+    }
+    
     public static String getFloat(String value) {
         return value + "f";
     }
