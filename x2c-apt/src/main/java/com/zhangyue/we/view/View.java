@@ -170,9 +170,8 @@ public class View implements ITranslator {
             stringBuilder.append(String.format("%s %s = new %s(%s,%s);\n", paramsName, mLayoutParamsObj
                     , paramsName, width, height));
         } else {
-            String paramsName = getLayoutParams();
-            stringBuilder.append(String.format("%s %s = new %s(%s,%s);\n", paramsName, mLayoutParamsObj
-                    , paramsName, width, height));
+            stringBuilder.append(String.format("%s.setTag(R.id.x2c_rootview_width,%s);\n", obj, width));
+            stringBuilder.append(String.format("%s.setTag(R.id.x2c_rootview_height,%s);\n", obj, height));
         }
 
         ArrayList<ITranslator> translators = createTranslator();
@@ -210,8 +209,6 @@ public class View implements ITranslator {
         if (mParent != null) {
             stringBuilder.append(String.format("%s.setLayoutParams(%s);\n", obj, mLayoutParamsObj));
             stringBuilder.append(String.format("%s.addView(%s);\n", mParent.getObjName(), obj));
-        } else {
-            stringBuilder.append(String.format("%s.setLayoutParams(%s);\n", obj, mLayoutParamsObj));
         }
 
         if (!mPadding.equals("0")) {
