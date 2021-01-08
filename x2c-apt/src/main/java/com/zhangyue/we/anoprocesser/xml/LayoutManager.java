@@ -85,7 +85,7 @@ public class LayoutManager {
         this.mFiler = filer;
         this.mRootFile = getRootFile();
         this.findPackageName();
-        this.mRJava = getR();
+        this.mRJava = isLibrary() ? getRLibrary() : getR();
         this.mAttrs = new Attr2FuncReader(new File(mRootFile, "X2C_CONFIG.xml")).parse();
     }
 
@@ -256,9 +256,8 @@ public class LayoutManager {
 
     }
 
-    private HashMap<String, Integer> getR() {
+    private HashMap<String, Integer> parseRJava(File rFile) {
         HashMap<String, Integer> map = new HashMap<>();
-        File rFile = getRFile();
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(rFile));
@@ -268,6 +267,9 @@ public class LayoutManager {
                 if (line.contains("public static final class layout")) {
                     layoutStarted = true;
                 } else if (layoutStarted) {
+                    if (line.contains("private layout() {}") || line.trim().isEmpty()) {
+                        continue;
+                    }
                     if (line.contains("}")) {
                         break;
                     } else {
@@ -286,6 +288,11 @@ public class LayoutManager {
             Util.close(reader);
         }
         return map;
+    }
+
+    private HashMap<String, Integer> getR() {
+        File rFile = getRFile();
+        return parseRJava(rFile);
     }
 
     private File getRFile() {
@@ -318,6 +325,88 @@ public class LayoutManager {
             Log.e("X2C not find R.java!!!");
         }
         return rFile;
+    }
+
+    private HashMap<String, Integer> parseRTxt(File rFile) {
+        HashMap<String, Integer> map = new HashMap<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(rFile));
+            String line;
+            boolean layoutStarted = false;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("int layout ")) {
+                    layoutStarted = true;
+                    line = line.substring(line.indexOf("layout ") + 7).trim();
+                    String[] lineSplit = line.split(" ");
+                    int id = Integer.decode(lineSplit[1]);
+                    map.put(lineSplit[0], id);
+                    mRJavaId.put(id, lineSplit[0]);
+                } else if (layoutStarted) {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Util.close(reader);
+        }
+        return map;
+    }
+
+    private HashMap<String, Integer> getRLibrary() {
+        File rFile = getRFileLibrary();
+        if (rFile.getName().endsWith("R.java")) {
+            return parseRJava(rFile);
+        } else {
+            return parseRTxt(rFile);
+        }
+    }
+
+    private File getRFileLibrary() {
+        String sep = File.separator;
+        File rFile = null;
+        try {
+            JavaFileObject filerSourceFile = mFiler.createSourceFile("test");
+            String path = filerSourceFile.toUri().getPath();
+            path = path.substring(0, path.indexOf("build"));
+            String rtxtPath = path + "build" + sep + "intermediates" + sep + "symbols" + sep + "debug" + sep + "R.txt";
+            rFile = new File(rtxtPath);
+            if (rFile.exists()) {
+                return rFile;
+            }
+
+            rFile = searchRTxtPath(path + "build");
+            if (rFile != null && rFile.exists()) {
+                return rFile;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.e("X2C not find R.txt!!!, path = " + rFile);
+        return rFile;
+    }
+
+    private File searchRTxtPath(String path) {
+        File[] subFiles = new File(path).listFiles();
+        if (subFiles == null) {
+            return null;
+        }
+
+        for (File subfile : subFiles) {
+            if (subfile.isDirectory()) {
+                File rFile = searchRTxtPath(subfile.getAbsolutePath());
+                if (rFile != null) {
+                    return rFile;
+                }
+            } else {
+                String filename = subfile.getName();
+                if (filename.endsWith("R.txt") || filename.endsWith("R.java")) {
+                    return subfile;
+                }
+            }
+        }
+        return null;
     }
 
     public HashMap<String, Attr> getAttrs() {
